@@ -1,0 +1,74 @@
+#containerAddCategory .formAdd {
+	padding: 10px;
+}
+
+#containerAddCategory .formAdd label {
+	font-size: large;
+	margin-bottom: 1px;
+  margin-top: 8px;
+}
+
+#containerAddCategory .formAdd .form-control:focus {
+	box-shadow: 0 0 0 2px rgba(13, 110, 253, .25);
+}
+
+#containerAddCategory .formAdd .btnSave {
+	margin: 5px 0;
+	padding: 10px 8%;
+	background-color: deepskyblue;
+	border: none;
+	color: white;
+	user-select: none;
+	cursor: pointer;
+	border-radius: 10px;
+	white-space: nowrap;
+}
+
+#containerAddCategory .formAdd .btnReset {
+  margin-left: 10px;
+	padding: 10px 6%;
+	background-color: lightcoral;
+	border: none;
+	color: white;
+	user-select: none;
+	cursor: pointer;
+	border-radius: 10px;
+	white-space: nowrap;
+}
+
+#containerAddCategory .formAdd .btnSave:hover,
+.btnReset:hover {
+	opacity: 0.8;
+}
+
+#containerAddCategory .formAdd .message {
+	font-size: large;
+	color: red;
+}
+
+#containerAddCategory .formAdd .ctnImage {
+	position: relative;
+	display: flex;
+	justify-content: flex-end;
+	width: 200px;
+	height: 180px;
+}
+
+#containerAddCategory .formAdd .ctnImage .uploadImage {
+	cursor: pointer;
+	border: solid 1px lightgray;
+}
+
+#containerAddCategory .formAdd .ctnImage .removeImage {
+	display: none;
+	position: absolute;
+	color: gray;
+	cursor: pointer;
+	padding: 2px;
+	background-color: white;
+	opacity: 0.6;
+}
+
+#containerAddCategory .formAdd .ctnImage .removeImage:hover{
+	opacity: 1;
+}

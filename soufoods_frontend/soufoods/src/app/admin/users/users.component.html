@@ -1,0 +1,135 @@
+<app-menu></app-menu>
+<div id="containerUser" class="on-off-menu">
+  <div class="loading text-center"><span class="loader"></span></div>
+  <div class="table-users table-responsive">
+    <table class="table table-bordered mt-3 text-center">
+      <tr>
+        <th>Email</th>
+        <th>Họ và tên</th>
+        <th>Số điện thoại </th>
+        <th>Địa chỉ</th>
+        <th>Trạng thái</th>
+        <th>Vai trò</th>
+        <th></th>
+      </tr>
+
+      <tr *ngFor="let user of users; let i = index" class="tr-user">
+        <td>{{user.email}}</td>
+        <td>{{user.lastName +' '+ user.firstName}}</td>
+        <td>{{user.phone}}</td>
+        <td>{{user.address}}</td>
+        <td>
+          <span class="actived" *ngIf="user.active">Hoạt động</span>
+          <span class="unActive" *ngIf="!user.active">Bị khóa</span>
+        </td>
+        <td>{{user.role.substring(5).toLowerCase()}}</td>
+        <td class="action">
+          <span class="edit" id="{{user.id}}" data-bs-toggle="modal" [attr.data-bs-target]="'#editForm' + user.id"><i class="fa-solid fa-pen"></i> Sửa</span>
+          <!-- Modal -->
+          <div class="modal fade" id="editForm{{user.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h1 class="modal-title fs-5" id="exampleModalLabel">Cập nhật người dùng</h1>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form #updateForm="ngForm" (ngSubmit)="update(updateForm, i)" class="updateForm" enctype="multipart/form-data">
+                  <div class="modal-body">
+                    <div class="form-group">
+                      <label>Email</label>
+                      <input type="hidden" [ngModel]="user.email" name="email" class="form-control inpForm">
+                      <input type="text" [value]="user.email" disabled="true" class="form-control inpForm">
+                      <div class="message">{{message.email}}</div>
+                    </div>
+
+                    <div class="form-group">
+                      <label>Mật khẩu</label>
+                      <input type="password" [ngModel]="user.password" name="password" class="form-control inpForm">
+                      <div class="message">{{message.password}}</div>
+                    </div>
+
+                    <div class="form-group">
+                      <label>Họ</label>
+                      <input type="text" [ngModel]="user.lastName" name="lastName" class="form-control inpForm">
+                      <div class="message">{{message.lastName}}</div>
+                    </div>
+
+                    <div class="form-group">
+                      <label>Tên đệm & tên</label>
+                      <input type="text" [ngModel]="user.firstName" name="firstName" class="form-control inpForm">
+                      <div class="message">{{message.firstName}}</div>
+                    </div>
+
+                    <div class="form-group">
+                      <label>Số điện thoại</label>
+                      <input type="text" [ngModel]="user.phone" name="phone" class="form-control inpForm">
+                      <div class="message">{{message.phone}}</div>
+                    </div>
+
+                    <div class="form-group">
+                      <label>Địa chỉ</label>
+                      <input type="text" [ngModel]="user.address" name="address" class="form-control inpForm">
+                      <div class="message">{{message.address}}</div>
+                    </div>
+
+                    <div class="form-group">
+                      <label>Trạng thái</label>
+                      <select *ngIf="user.active" [ngModel]="user.active" name="active" class="form-select">
+                        <option value="true">Hoạt động</option>
+                        <option value="false">Khóa</option>
+                      </select>
+                      <select *ngIf="!user.active" [ngModel]="user.active" name="active" class="form-select">
+                        <option value="true">Hoạt động</option>
+                        <option value="false" selected>Khóa</option>
+                      </select>
+                    </div>
+
+                    <input type="hidden" [ngModel]="user.account" name="account" class="form-control inpForm">
+
+                  </div>
+                  <div class="modal-footer">
+                    <div class="change-message"></div>
+                    <div class="modal-action">
+                      <button type="button" class="btn btn-success" (click)="resetForm(user.email, updateForm)">Khôi phục</button>
+                      <button type="button" class="btn btn-secondary btnCancel" data-bs-dismiss="modal">Hủy</button>
+                      <button type="submit" class="btn btn-primary btnSave">Lưu thay đổi</button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+
+          <span class="remove" id="{{user.id}}" (click)="delete(user.email)"><i class="fa-regular fa-trash-can"></i> Xóa</span>
+        </td>
+      </tr>
+    </table>
+    <div class="total">Tổng người dùng: {{total}}</div>
+
+    <ul id="paging" *ngIf="total > 0">
+      <span class="page" (click)="setPageNumber(1)"><li>Đầu</li></span>
+      <span *ngFor="let i of totalPage">
+        <span *ngIf="i <= 5 && pageNumber <= 2">
+          <span *ngIf="i == pageNumber">
+            <span class="page" (click)="setPageNumber(i)"><li style="background-color: rgb(253, 142, 105);">{{i}}</li></span>
+          </span>
+          <span *ngIf="i != pageNumber">
+            <span class="page" (click)="setPageNumber(i)"><li>{{i}}</li></span>
+          </span>
+        </span>
+
+        <span *ngIf="pageNumber > 2">
+          <span *ngIf="i >= pageNumber-2 && i <= pageNumber+2">
+            <span *ngIf="i==pageNumber">
+              <span class="page" (click)="setPageNumber(i)"><li style="background-color: rgb(253, 142, 105);">{{i}}</li></span>
+            </span>
+            <span *ngIf="i!=pageNumber">
+              <span class="page" (click)="setPageNumber(i)"><li>{{i}}</li></span>
+            </span>
+          </span>
+        </span>
+      </span>
+      <span class="page" (click)="setPageNumber(totalPage.length)"><li>Cuối</li></span>
+    </ul>
+  </div>
+</div>
