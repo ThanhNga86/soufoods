@@ -34,12 +34,12 @@ public class AdminCategoryController {
 	
 	@GetMapping("")
 	public ResponseEntity<?> categories(@RequestParam("pageNumber") Optional<Integer> pageNumber,
-			@RequestParam("totalPage") Optional<Integer> totalPage) {
-		return ResponseEntity.ok(categoryService.findAll(pageNumber, totalPage));
+			@RequestParam("sizePage") Optional<Integer> sizePage) {
+		return ResponseEntity.ok(categoryService.findAll(pageNumber, sizePage));
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<?> categories(@PathVariable("id") Long id) {
+	public ResponseEntity<?> category(@PathVariable("id") Long id) {
 		Map<String, Object> map = categoryService.findById(id);
 		return ResponseEntity.ok(map);
 	}

@@ -12,5 +12,6 @@ import lombok.NoArgsConstructor;
 public class FilterCategoryRequest {
 	private String search;
 	private Boolean active;
+	private Boolean activeCd;
 	private Integer pageNumber;
 }

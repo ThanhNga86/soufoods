@@ -32,7 +32,7 @@
 #containerProduct .btnRmImage {
 	width: 8px;
 	height: 8px;
-	background-color: white;
+	background-color: rgb(255, 255, 255);
 	position: absolute;
 }
 
@@ -95,14 +95,6 @@
 #containerProduct .show-images .row>div {
 	margin-bottom: 10px;
 	cursor: default;
-}
-
-#containerProduct .show-describes .row>div {
-	display: flex;
-	color: white;
-	font-size: large;
-	padding: 4px 10px;
-	border-top: solid 1px whitesmoke;
 }
 
 #containerProduct .fa-x:hover {

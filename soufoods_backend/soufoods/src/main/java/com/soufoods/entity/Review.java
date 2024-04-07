@@ -30,11 +30,8 @@ public class Review implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	private String fullname;
-	private String email;
-	private String title;
 	@Column(columnDefinition = "TEXT")
-	private String comment;
+	private String content;
 	private Integer rate;
 	private Date createDate = new Date();
 	private boolean active;

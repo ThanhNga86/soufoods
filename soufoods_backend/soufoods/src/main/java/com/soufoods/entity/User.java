@@ -2,6 +2,7 @@ package com.soufoods.entity;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.security.core.GrantedAuthority;
@@ -41,6 +42,7 @@ public class User implements UserDetails, Serializable {
 	private String lastName;
 	private String phone;
 	private String address;
+	private Date createDate;
 	private boolean active;
 	@Enumerated(EnumType.STRING)
 	private Role role;

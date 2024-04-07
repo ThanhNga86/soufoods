@@ -12,6 +12,7 @@ import Swal from 'sweetalert2';
 export class ProductsComponent implements OnInit {
   products: any[] = []
   categories: any[] = []
+  categoryDetails: any[] = []
   arrImages: any[] = []
   total: any
   totalPage: number[] = []
@@ -26,7 +27,8 @@ export class ProductsComponent implements OnInit {
     discount: null,
     active: null,
     activePd: null,
-    categoryId: null
+    categoryId: null,
+    categoryDetailId: null
   }
 
   constructor(private adminProductsService: AdminProductsService, private imagesService: ImagesService, private adminCategoriesService: AdminCategoriesService) { }
@@ -41,7 +43,10 @@ export class ProductsComponent implements OnInit {
       this.categories = response
     })
 
-    this.resetFunctions()
+    // Lấy tất cả dữ liệu của category detail
+    this.adminCategoriesService.findAllCategoryDetail().subscribe((response: any) => {
+      this.categoryDetails = response
+    })
   }
 
   private resetFunctions() {
@@ -93,13 +98,13 @@ export class ProductsComponent implements OnInit {
         })
       }
 
-      // Xóa danh mục
+      // Xóa sản phẩm
       const remove: HTMLElement | any = document.querySelectorAll(".remove")
       for (let i = 0; i < remove.length; i++) {
         const cloneElement = this.cloneElement(remove[i])
         cloneElement.addEventListener("click", () => {
           const id = remove[i].getAttribute("id")
-          this.delete(id)
+          this.delete(id, i)
         })
       }
 
@@ -109,7 +114,7 @@ export class ProductsComponent implements OnInit {
       } else {
         clearInterval(loadDataTime)
       }
-    }, 300)
+    }, 200)
   }
 
   private cloneElement(element: any): Element {
@@ -152,28 +157,68 @@ export class ProductsComponent implements OnInit {
           <label class="form-check-label label-filter">Trạng thái giá khuyến mãi</label>
         </div>
       `
+
       this.adminCategoriesService.findAllCategory().subscribe((response: any) => {
-        const selectElement = document.createElement('select');
-        selectElement.classList.add('form-select', 'filterCategory');
-        selectElement.style.boxShadow = 'none'
-        selectElement.innerHTML += `
+        const filterCategory: any = document.createElement('select');
+        filterCategory.classList.add('form-select', 'formFilterCategory');
+        filterCategory.style.boxShadow = 'none'
+        filterCategory.innerHTML += `
           <select class="form-select filterCategory">
           <option value="null">Chọn danh mục sản phẩm</option>
         `
         for (let i = 0; i < response.length; i++) {
-          selectElement.innerHTML += `
+          filterCategory.innerHTML += `
             <option value="${response[i].id}">${response[i].name}</option>
           `
         }
-        filterTable.appendChild(selectElement);
+        filterTable.appendChild(filterCategory);
 
         // lọc danh mục sản phẩm
-        selectElement.addEventListener("change", () => {
-          var optionFirst = selectElement.querySelectorAll("option")[0]
-          optionFirst.innerHTML = selectElement.value == 'null' ? 'Chọn danh mục sản phẩm' : 'Tắt lọc'
-          this.filters.categoryId = selectElement.value
+        filterCategory.addEventListener("change", () => {
+          var optionFirst = filterCategory.querySelectorAll("option")[0]
+          optionFirst.innerHTML = filterCategory.value == 'null' ? 'Chọn danh mục sản phẩm' : 'Tắt lọc'
+          this.filters.categoryId = filterCategory.value
           this.filters.flag = true
           this.setPageNumber(1)
+
+          // lọc danh mục chi tiết
+          const formFilterCategoryDetail = document.querySelector(".formFilterCategoryDetail")
+          if (formFilterCategoryDetail) {
+            formFilterCategoryDetail.remove()
+          }
+
+          if (filterCategory.value != 'null') {
+            this.adminCategoriesService.findAllCategoryDetailByCategory(filterCategory.value).subscribe((response: any) => {
+              const filterCategoryDetail = document.createElement('select');
+              filterCategoryDetail.classList.add('form-select', 'formFilterCategoryDetail', 'mt-2');
+              filterCategoryDetail.style.boxShadow = 'none'
+              filterCategoryDetail.innerHTML += `
+                  <select class="form-select filterCategoryDetail">
+                  <option value="null">Chọn loại danh mục sản phẩm</option>
+                `
+              for (let i = 0; i < response.length; i++) {
+                filterCategoryDetail.innerHTML += `
+                  <option value="${response[i].id}">${response[i].size}</option>
+                `
+              }
+              filterTable.appendChild(filterCategoryDetail);
+
+              filterCategoryDetail.addEventListener("change", () => {
+                var optionFirst = filterCategoryDetail.querySelectorAll("option")[0]
+                optionFirst.innerHTML = filterCategoryDetail.value == 'null' ? 'Chọn danh mục sản phẩm' : 'Tắt lọc'
+                this.filters.categoryDetailId = filterCategoryDetail.value
+                this.filters.flag = true
+                this.setPageNumber(1)
+              })
+            })
+          } else {
+            if (formFilterCategoryDetail) {
+              formFilterCategoryDetail.remove()
+            }
+            this.filters.categoryDetailId = null
+            this.filters.flag = true
+            this.setPageNumber(1)
+          }
         })
       })
 
@@ -250,9 +295,10 @@ export class ProductsComponent implements OnInit {
   }
 
   public findAll() {
-    const sizePage = 20
+    const sizePage = 10
     const loading: HTMLElement | any = document.querySelector(".loading")
     const table: HTMLElement | any = document.querySelector(".table-products")
+    const row: HTMLElement | any = table.querySelectorAll("tr")
     loading.style.display = 'block'
     table.style.display = 'none'
 
@@ -268,6 +314,13 @@ export class ProductsComponent implements OnInit {
       this.total = response.total
       this.totalPage = Array.from({ length: response.totalPage }, (_, index) => index + 1);
 
+      if (this.total == 0) {
+        for (let i = 1; i < row.length; i++) {
+          row[i].remove()
+        }
+      }
+
+      this.resetFunctions()
       loading.style.display = 'none'
       table.style.display = 'block'
     })
@@ -275,11 +328,6 @@ export class ProductsComponent implements OnInit {
 
   private showAndHiddenImages() {
     const viewDetailImage = document.querySelectorAll(".viewDetailImage")
-    var check = true
-
-    if (viewDetailImage[0] == undefined) {
-      check = false
-    }
 
     for (let i = 0; i < viewDetailImage.length; i++) {
       viewDetailImage[i].addEventListener("click", () => {
@@ -324,7 +372,6 @@ export class ProductsComponent implements OnInit {
         document.body.style.overflow = 'auto'
       }
     }
-    return check
   }
 
   private seeDetail(i: number) {
@@ -342,7 +389,7 @@ export class ProductsComponent implements OnInit {
       const newCell: any = newRow.insertCell(0);
       var color = 'rgb(247,224,212)'
       newCell.style.backgroundColor = color
-      newCell.colSpan = "8"
+      newCell.colSpan = "9"
 
       newCell.innerHTML += `
         <div style="text-align: left; background-color: ${color};">
@@ -369,7 +416,7 @@ export class ProductsComponent implements OnInit {
           <th style="background-color: ${color}; border: solid 1px white; border-collapse: collapse;"></th>
         </tr>
       `;
-      this.adminProductsService.findAllProductD(this.products[i].id).subscribe((response: any) => {
+      this.adminProductsService.findAllProductDetailByProduct(this.products[i].id).subscribe((response: any) => {
         for (let i = 0; i < response.length; i++) {
           table.innerHTML += `
             <tr>
@@ -401,7 +448,7 @@ export class ProductsComponent implements OnInit {
             const id: any = cloneElement.getAttribute("id")
             const row = cloneElement.parentNode?.parentNode
             if (id) {
-              this.deleteProduct(id, row)
+              this.deleteProductD(id, row)
             }
           })
         }
@@ -438,6 +485,7 @@ export class ProductsComponent implements OnInit {
         }
       }
 
+      this.resetFunctions()
       loading.style.display = 'none'
       table.style.display = 'block'
     })
@@ -457,8 +505,6 @@ export class ProductsComponent implements OnInit {
     } else {
       this.findAll()
     }
-
-    this.resetFunctions()
 
     // Xóa tất cả bảng xem chi tiết sản phẩm
     for (let i = 0; i < rowSeeDetail.length; i++) {
@@ -581,11 +627,27 @@ export class ProductsComponent implements OnInit {
       })
     }
 
+    // Xử lý phần thay đổi category detail
+    const category: any = document.querySelectorAll(".category")[i]
+    const categoryDetail: any = document.querySelectorAll(".categoryDetail")[i]
+
+    category.addEventListener("change", () => {
+      categoryDetail.innerHTML = ""
+      this.adminCategoriesService.findAllCategoryDetailByCategory(category.value).subscribe((response: any) => {
+        for (let i = 0; i < response.length; i++) {
+          categoryDetail.innerHTML += `
+            <option value="" hidden>Chọn loại danh mục sản phẩm</option>
+            <option value="${response[i].id}">${response[i].size}</option>
+          `
+        }
+      })
+    })
+
     // Xử lý phần thêm form Type
     const ctnTypes: HTMLElement | any = document.querySelectorAll(".ctnTypes")[i]
     const addFormType: HTMLElement | any = document.querySelectorAll(".addFormType")[i]
 
-    this.adminProductsService.findAllProductD(id).subscribe((response: any) => {
+    this.adminProductsService.findAllProductDetailByProduct(id).subscribe((response: any) => {
       ctnTypes.innerHTML = ''
       for (let i = 0; i < response.length; i++) {
         ctnTypes.innerHTML += `<div class="typeId mt-2"></div>`
@@ -626,7 +688,7 @@ export class ProductsComponent implements OnInit {
       }
 
       // mặc định
-      const actionFormtype = () => {
+      const actionFormType = () => {
         // xóa form type
         const removeFormType = document.querySelectorAll(".removeFormType")
         const typeId = document.querySelectorAll(".typeId")
@@ -725,7 +787,7 @@ export class ProductsComponent implements OnInit {
           })
         })
       }
-      actionFormtype()
+      actionFormType()
 
       // có sự kiện thêm form type
       addFormType.addEventListener("click", () => {
@@ -776,7 +838,7 @@ export class ProductsComponent implements OnInit {
         ctnTypes.appendChild(newOutStock)
         ctnTypes.appendChild(typeProduct)
 
-        actionFormtype()
+        actionFormType()
       })
     })
   }
@@ -798,24 +860,11 @@ export class ProductsComponent implements OnInit {
     const inpQuantity: any = ctnTypes.querySelectorAll(".inpQuantity")
     const inpDiscount: any = ctnTypes.querySelectorAll(".inpDiscount")
     const inpActivePd: any = ctnTypes.querySelectorAll(".inpActivePd")
-    const category: any = document.querySelectorAll(".category")[i]
+    const categoryDetail: any = document.querySelectorAll(".categoryDetail")[i]
     const inpActive: any = document.querySelectorAll(".inpActive")[i]
     const index = i
 
-    // tắt bảng xem sản phẩm chi tiết
-    var rowSeeDetail: any = document.querySelectorAll(".tr-productupdateForm")[i]
-    var seeDetail: any = document.querySelectorAll(".see-detail")[i]
-    var flagSeeDetail = seeDetail.querySelector("i").getAttribute("flag")
-
-    if(flagSeeDetail) {
-      if (flagSeeDetail == 'false') {
-        seeDetail.innerHTML = '<i class="fa-solid fa-eye" flag="true"></i> Xem'
-        seeDetail.style.backgroundColor = 'green'
-        rowSeeDetail.nextSibling.remove()
-      }
-    }
-
-    if (this.validateForm()) {
+    if (this.validateForm(i)) {
       btnSave.disabled = true
       btnSave.innerHTML = '<span class="loader2"></span> Lưu thay đổi'
 
@@ -836,7 +885,20 @@ export class ProductsComponent implements OnInit {
       formData.append("type", inpTypeP.value)
       formData.append("describes", inpDescribes.value.replaceAll(/\n/g, "<br>"))
       formData.append("active", inpActive.value)
-      formData.append("category", category.value)
+      formData.append("categoryDetail", categoryDetail.value)
+
+      // tắt bảng xem sản phẩm chi tiết
+      var rowSeeDetail: any = document.querySelectorAll(".tr-productupdateForm")[i]
+      var seeDetail: any = document.querySelectorAll(".see-detail")[i]
+      var flagSeeDetail = seeDetail.querySelector("i").getAttribute("flag")
+
+      if (flagSeeDetail) {
+        if (flagSeeDetail == 'false') {
+          seeDetail.innerHTML = '<i class="fa-solid fa-eye" flag="true"></i> Xem'
+          seeDetail.style.backgroundColor = 'green'
+          rowSeeDetail.nextSibling.remove()
+        }
+      }
 
       this.adminProductsService.update(formData).subscribe((response: any) => {
         if (response.status == '200') {
@@ -881,19 +943,21 @@ export class ProductsComponent implements OnInit {
 
               // thông báo và làm mới form khi lưu thay đổi
               if (i == typeProduct.length - 1) {
-                this.resetForm(productId, index)
-                btnSave.disabled = false
-                btnSave.innerHTML = 'Lưu thay đổi'
+                setTimeout(() => {
+                  var changeMessage: NodeListOf<HTMLElement> | null = document.querySelectorAll(".change-message")
+                  if (changeMessage) {
+                    changeMessage.forEach((e) => {
+                      e.innerText = 'Cập nhật sản phẩm thành công !'
+                      setTimeout(() => {
+                        e.innerText = ''
+                      }, 2000);
+                    })
+                  }
+                  btnSave.disabled = false
+                  btnSave.innerHTML = 'Lưu thay đổi'
+                  this.resetForm(productId, index)
+                }, 1000);
 
-                var changeMessage: NodeListOf<HTMLElement> | null = document.querySelectorAll(".change-message")
-                if (changeMessage) {
-                  changeMessage.forEach((e) => {
-                    e.innerText = 'Cập nhật sản phẩm thành công !'
-                    setTimeout(() => {
-                      e.innerText = ''
-                    }, 2000);
-                  })
-                }
               }
             }
           } else {
@@ -919,9 +983,10 @@ export class ProductsComponent implements OnInit {
     }
   }
 
-  private validateForm() {
-    const inpForm = document.querySelectorAll(".inpForm")
-    const inpNumber: any = document.querySelectorAll(".inpNumber")
+  private validateForm(i: number) {
+    const action: any = document.querySelectorAll(".action")[i]
+    const inpForm = action.querySelectorAll(".inpForm")
+    const inpNumber: any = action.querySelectorAll(".inpNumber")
     var check = true
 
     inpForm.forEach((event: any) => {
@@ -952,6 +1017,7 @@ export class ProductsComponent implements OnInit {
     const inpDescribes: any = document.querySelectorAll(".inpDescribes")[i]
     const ctnTypes: any = document.querySelectorAll(".ctnTypes")[i]
     const category: any = document.querySelectorAll(".category")[i]
+    const categoryDetail: any = document.querySelectorAll(".categoryDetail")[i]
     const inpActive: HTMLElement | any = document.querySelectorAll(".inpActive")[i]
     const btnReset: HTMLElement | any = document.querySelectorAll(".btnReset")[i]
 
@@ -998,52 +1064,63 @@ export class ProductsComponent implements OnInit {
           }
           length++
         }
+
+        this.adminProductsService.findAllProductDetailByProduct(id).subscribe((response: any) => {
+          ctnTypes.innerHTML = ''
+          for (let i = 0; i < response.length; i++) {
+            ctnTypes.innerHTML += `<div class="typeId mt-2"></div>`
+            ctnTypes.innerHTML += `<span>Mã số: ${response[i].id}</span>`
+            ctnTypes.innerHTML += (response[i].quantity == 0) ? '<span class="outStock" style="margin-left: 3px; background-color: lightcoral; color: white; user-select: none; border-radius: 3px; white-space: nowrap;">Hết hàng</span>' : '<span class="outStock" style="margin-left: 3px; background-color: lightcoral; color: white; user-select: none; border-radius: 3px; white-space: nowrap;"></span>'
+            var typeProduct: any = document.createElement("div")
+            typeProduct.setAttribute("class", "type-product old-types")
+            typeProduct.setAttribute("product-detail-id", response[i].id)
+            typeProduct.style = "display: flex; border: solid 1px lightgray; padding: 5px 10px 10px 10px;"
+
+            typeProduct.innerHTML += `
+              <div class="form-group">
+                <label>Tên loại của sản phẩm</label>
+                <input type="text" value="${response[i].size}" class="form-control inpForm inpSize">
+              </div>
+
+              <div class="form-group mx-4">
+                <label>Giá gốc</label>
+                <input type="number" value="${response[i].price}" class="form-control inpForm inpNumber inpPrice">
+                <span class="pricePromotional">Giá bán: ${Number(response[i].price * (100 - response[i].discount) / 100).toLocaleString("vi-VN")} đ</span>
+              </div>
+
+              <div class="form-group">
+                <label>Số lượng</label>
+                <input type="number" value="${Number(response[i].quantity).toLocaleString("vi-VN")}" class="form-control inpForm inpNumber inpQuantity">
+              </div>
+
+              <div class="form-group mx-4">
+                <label>Khuyến mãi</label>
+                <input type="number" value="${response[i].discount}" class="form-control inpForm inpNumber inpDiscount" value="0">
+                <span class="pricePromotional"></span>
+              </div>
+            `
+            typeProduct.innerHTML += (response[i].active == true) ?
+              '<div class="form-group"><label>Trạng thái</label><select class="form-select inpForm inpActivePd"><option value="true">Đang bán</option><option value="false">Ngừng bán</option></select></div>' :
+              '<div class="form-group"><label>Trạng thái</label><select class="form-select inpForm inpActivePd"><option value="true">Đang bán</option><option value="false" selected>Ngừng bán</option></select></div>'
+            ctnTypes.appendChild(typeProduct)
+          }
+        })
       })
 
       inpTypeP.value = product.type
       inpDescribes.value = product.describes.replaceAll('<br>', '\n')
 
-      this.adminProductsService.findAllProductD(id).subscribe((response: any) => {
-        ctnTypes.innerHTML = ''
+      category.value = product.categoryDetail.category.id
+      categoryDetail.innerHTML = ""
+      this.adminCategoriesService.findAllCategoryDetailByCategory(category.value).subscribe((response: any) => {
         for (let i = 0; i < response.length; i++) {
-          ctnTypes.innerHTML += `<div class="typeId mt-2"></div>`
-          ctnTypes.innerHTML += `<span>Mã số: ${response[i].id}</span>`
-          ctnTypes.innerHTML += (response[i].quantity == 0) ? '<span class="outStock" style="margin-left: 3px; background-color: lightcoral; color: white; user-select: none; border-radius: 3px; white-space: nowrap;">Hết hàng</span>' : '<span class="outStock" style="margin-left: 3px; background-color: lightcoral; color: white; user-select: none; border-radius: 3px; white-space: nowrap;"></span>'
-          var typeProduct: any = document.createElement("div")
-          typeProduct.setAttribute("class", "type-product old-types")
-          typeProduct.setAttribute("product-detail-id", response[i].id)
-          typeProduct.style = "display: flex; border: solid 1px lightgray; padding: 5px 10px 10px 10px;"
-
-          typeProduct.innerHTML += `
-            <div class="form-group">
-              <label>Tên loại của sản phẩm</label>
-              <input type="text" value="${response[i].size}" class="form-control inpForm inpSize">
-            </div>
-
-            <div class="form-group mx-4">
-              <label>Giá gốc</label>
-              <input type="number" value="${response[i].price}" class="form-control inpForm inpNumber inpPrice">
-              <span class="pricePromotional">Giá bán: ${Number(response[i].price * (100 - response[i].discount) / 100).toLocaleString("vi-VN")} đ</span>
-            </div>
-
-            <div class="form-group">
-              <label>Số lượng</label>
-              <input type="number" value="${Number(response[i].quantity).toLocaleString("vi-VN")}" class="form-control inpForm inpNumber inpQuantity">
-            </div>
-
-            <div class="form-group mx-4">
-              <label>Khuyến mãi</label>
-              <input type="number" value="${response[i].discount}" class="form-control inpForm inpNumber inpDiscount" value="0">
-              <span class="pricePromotional"></span>
-            </div>
+          categoryDetail.innerHTML += `
+            <option value="" hidden>Chọn loại danh mục sản phẩm</option>
+            <option value="${response[i].id}">${response[i].size}</option>
           `
-          typeProduct.innerHTML += (response[i].active == true) ?
-            '<div class="form-group"><label>Trạng thái</label><select class="form-select inpForm inpActivePd"><option value="true">Đang bán</option><option value="false">Ngừng bán</option></select></div>' :
-            '<div class="form-group"><label>Trạng thái</label><select class="form-select inpForm inpActivePd"><option value="true">Đang bán</option><option value="false" selected>Ngừng bán</option></select></div>'
-          ctnTypes.appendChild(typeProduct)
         }
+        categoryDetail.value = product.categoryDetail.id
       })
-      category.value = product.category.id
       inpActive.value = product.active
 
       this.products[i].id = product.id
@@ -1052,7 +1129,7 @@ export class ProductsComponent implements OnInit {
       this.products[i].imageUrl = product.imageUrl
       this.products[i].type = product.type
       this.products[i].describes = product.describes
-      this.products[i].category = product.category
+      this.products[i].categoryDetail = product.categoryDetail
       this.products[i].active = product.active
 
       btnReset.disabled = false
@@ -1060,7 +1137,7 @@ export class ProductsComponent implements OnInit {
     })
   }
 
-  private delete(id: number) {
+  private delete(id: number, i: number) {
     Swal.fire({
       text: `Bạn chắc muốn xóa sản phẩm này?`,
       showCancelButton: true,
@@ -1076,8 +1153,20 @@ export class ProductsComponent implements OnInit {
                 icon: "success",
                 confirmButtonText: "Đồng ý",
               });
-              this.findAll()
-              this.resetFunctions()
+              // tắt bảng xem sản phẩm chi tiết
+              var rowSeeDetail: any = document.querySelectorAll(".tr-productupdateForm")[i]
+              var seeDetail: any = document.querySelectorAll(".see-detail")[i]
+              var flagSeeDetail = seeDetail.querySelector("i").getAttribute("flag")
+
+              if (flagSeeDetail) {
+                if (flagSeeDetail == 'false') {
+                  seeDetail.innerHTML = '<i class="fa-solid fa-eye" flag="true"></i> Xem'
+                  seeDetail.style.backgroundColor = 'green'
+                  rowSeeDetail.nextSibling.remove()
+                }
+              }
+
+              this.setPageNumber(this.pageNumber)
             } else {
               if (response.error) {
                 Swal.fire({
@@ -1092,7 +1181,7 @@ export class ProductsComponent implements OnInit {
       })
   }
 
-  private deleteProduct(id: number, row: any) {
+  private deleteProductD(id: number, row: any) {
     const rowSeeDetail = row.parentNode.parentNode.parentNode.parentNode
     const idResetForm = rowSeeDetail.getAttribute("id-resetForm")
     const indexResetForm = rowSeeDetail.getAttribute("index-resetForm")
@@ -1134,12 +1223,10 @@ export class ProductsComponent implements OnInit {
 
     inpForm.forEach((event: any) => {
       event.addEventListener("input", () => {
-        if (event.value != '') {
-          const name = event.getAttribute("name")
-          for (const key in this.message) {
-            if (key == name) {
-              this.message[key] = ''
-            }
+        const name = event.getAttribute("name")
+        for (const key in this.message) {
+          if (key == name) {
+            this.message[key] = ''
           }
         }
       })

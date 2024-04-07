@@ -32,7 +32,7 @@ public class AdminUserService {
 	public Map<String, Object> findByEmail(String email) {
 		Map<String, Object> map = new HashMap<>();
 		Optional<User> user = userRepository.findByEmail(email);
-		if(user.isPresent()) {
+		if (user.isPresent()) {
 			map.put("status", "200");
 			map.put("user", user.get());
 		} else {
@@ -41,8 +41,22 @@ public class AdminUserService {
 		return map;
 	}
 
+	public Map<String, Object> findAllByEmail(String email) {
+		Map<String, Object> map = new HashMap<>();
+		List<User> users = userRepository.findAllByEmail(email);
+		if(users.size() > 10) {
+			users = users.subList(0, 10);
+		}
+		map.put("users", users);
+		return map;
+	}
+	
+	public List<User> findAll() {
+		return userRepository.findAll();
+	}
+
 	public AdminUserResponse findAll(Optional<Integer> pageNumber, Optional<Integer> sizePage1) {
-		int sizePage = sizePage1.orElse(20);
+		int sizePage = sizePage1.orElse(10);
 		Pageable page = PageRequest.of(pageNumber.orElse(1) - 1, sizePage);
 		Page<User> users = userRepository.findAll(page);
 		long total = users.getTotalElements();
@@ -56,7 +70,7 @@ public class AdminUserService {
 	}
 
 	public AdminUserResponse filterUser(FilterUserRequest request) {
-		int sizePage = 20;
+		int sizePage = 10;
 		Pageable page = PageRequest.of(request.getPageNumber() - 1, sizePage);
 		Page<User> users = userRepository.filterUser(request.getSearch(), request.getActive(), page);
 		long total = users.getTotalElements();
@@ -153,7 +167,7 @@ public class AdminUserService {
 							}
 						}
 						userRepository.delete(user.get());
-						if(!images.isEmpty()) {
+						if (!images.isEmpty()) {
 							for (Images image : images) {
 								awsS3Service.deleteFileS3(image.getName());
 							}

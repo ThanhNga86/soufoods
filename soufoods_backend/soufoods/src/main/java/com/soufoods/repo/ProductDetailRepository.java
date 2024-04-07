@@ -11,5 +11,5 @@ import com.soufoods.entity.ProductDetail;
 public interface ProductDetailRepository extends JpaRepository<ProductDetail, Long> {
 
 	@Query("from ProductDetail u where u.product = ?1 order by u.size")
-	public List<ProductDetail> findAllByProductId(Product product);
+	List<ProductDetail> findAllByProduct(Product product);
 }

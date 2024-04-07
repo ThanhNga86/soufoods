@@ -21,8 +21,8 @@ export class AdminCategoriesService {
     return this.httpClient.get(`${this.userAuthService.getHost()}/api/admin/categories/all`)
   }
 
-  public findAll(pageNumber: number, totalPage: number) {
-    return this.httpClient.get(`${this.userAuthService.getHost()}/api/admin/categories?pageNumber=${pageNumber}&totalPage=${totalPage}`)
+  public findAll(pageNumber: number, sizePage: number) {
+    return this.httpClient.get(`${this.userAuthService.getHost()}/api/admin/categories?pageNumber=${pageNumber}&sizePage=${sizePage}`)
   }
 
   public add(formData: FormData) {
@@ -37,4 +37,23 @@ export class AdminCategoriesService {
     return this.httpClient.delete(`${this.userAuthService.getHost()}/api/admin/categories/${id}`)
   }
 
+  public findAllCategoryDetail() {
+    return this.httpClient.get(`${this.userAuthService.getHost()}/api/admin/categoryDetail/all`)
+  }
+
+  public findAllCategoryDetailByCategory(id: number) {
+    return this.httpClient.get(`${this.userAuthService.getHost()}/api/admin/categoryDetail/all/${id}`)
+  }
+
+  public addCategoryDetail(formData: FormData) {
+    return this.httpClient.post(`${this.userAuthService.getHost()}/api/admin/categoryDetail`, formData)
+  }
+
+  public updateCategoryDetail(formData: FormData) {
+    return this.httpClient.put(`${this.userAuthService.getHost()}/api/admin/categoryDetail`, formData)
+  }
+
+  public deleteCategoryDetail(id: number) {
+    return this.httpClient.delete(`${this.userAuthService.getHost()}/api/admin/categoryDetail/${id}`)
+  }
 }

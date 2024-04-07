@@ -107,8 +107,20 @@ th {
   cursor: pointer;
 }
 
+#containerCategory .action .see-detail {
+  margin: 2px;
+  text-decoration: none;
+  padding: 2px 4px;
+  border-radius: 6px;
+  background-color: green;
+  white-space: nowrap;
+  color: white;
+  user-select: none;
+  cursor: pointer;
+}
+
 #containerCategory .action .remove:hover,
-.edit:hover {
+.edit:hover, .see-detail:hover {
   opacity: 0.8;
 }
 
@@ -137,6 +149,23 @@ th {
 
 #containerCategory .ctnImage .removeImage:hover {
   opacity: 1;
+}
+
+#containerCategory .addFormType {
+  margin: 10px 10px 10px 0;
+	padding: 10px;
+	background-color: green;
+	border: none;
+	color: white;
+	user-select: none;
+	cursor: pointer;
+	border-radius: 10px;
+	white-space: nowrap;
+  font-size: 22px;
+}
+
+#containerCategory .addFormType:hover {
+  opacity: 0.8;
 }
 
 /* paging */

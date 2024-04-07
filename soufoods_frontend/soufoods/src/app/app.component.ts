@@ -14,7 +14,8 @@ export class AppComponent implements OnInit {
   constructor(private userAuthService: UserAuthService, private jwtHepler: JwtHelperService, private router: Router) { }
 
   ngOnInit(): void {
-    var refreshTokenTime = setInterval(() => {
+    // Làm mới Token khi hết hạn
+    const refreshTokenTime = setInterval(() => {
       if (this.userAuthService.getRefreshToken() && !(this.jwtHepler.isTokenExpired(this.userAuthService.getRefreshToken()))) {
         this.userAuthService.refreshToken().subscribe((response: any) => {
           this.userAuthService.setToken(response.token)
@@ -31,4 +32,5 @@ export class AppComponent implements OnInit {
       }
     }, 10000)
   }
+
 }

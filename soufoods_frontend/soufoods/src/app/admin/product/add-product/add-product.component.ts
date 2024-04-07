@@ -24,7 +24,10 @@ export class AddProductComponent implements OnInit {
     this.handlerUploadImages()
 
     // Xử lý phần thêm form type
-    this.handlerAddType()
+    this.handlerAddFormType()
+
+    // Xử lý phần category detail
+    this.handlerCategoryDetail()
 
     // Xử lý phần input sẽ tắt message nếu input đó lỗi
     this.checkInput()
@@ -63,21 +66,24 @@ export class AddProductComponent implements OnInit {
     const inpDiscount: any = document.querySelectorAll(".inpDiscount")
     const inpActivePd: any = document.querySelectorAll(".inpActivePd")
     const inpActive: any = document.querySelector(".inpActive")
-    const category: any = document.querySelector(".category")
+    const categoryDetail: any = document.querySelector(".categoryDetail")
+    const ctnCategoryDetail: any = document.querySelector(".ctnCategoryDetail")
 
     if (this.validateForm()) {
       btnSave.disabled = true
       btnSave.innerHTML = '<span class="loader2"></span> Thêm mới'
       formData.append("name", inpName.value)
       formData.append("fileImage", fileImage.files[0])
+
       for (let i = 0; i < this.arrImages.length; i++) {
         formData.append("fileImages", this.arrImages[i].files)
+        console.log(this.arrImages[i].files)
       }
       if (inpTypeP.value != '') {
         formData.append("type", inpTypeP.value)
       }
       formData.append("describes", inpDescribes.value.replaceAll(/\n/g, "<br>"))
-      formData.append("category", category.value)
+      formData.append("categoryDetail", categoryDetail.value)
       formData.append("active", inpActive.value)
 
       this.adminProductsService.add(formData).subscribe((response: any) => {
@@ -98,6 +104,7 @@ export class AddProductComponent implements OnInit {
               if (response.status == '200') {
                 if (i == typeProduct.length - 1) {
                   Swal.fire("", "Thêm sản phẩm thành công", "success")
+                  ctnCategoryDetail.style.display = "none"
                   this.resetForm()
                 }
               } else if (response.status == '401') {
@@ -147,7 +154,27 @@ export class AddProductComponent implements OnInit {
     return check
   }
 
-  private handlerAddType() {
+  private handlerCategoryDetail() {
+    const category: any = document.querySelector(".category")
+    const ctnCategoryDetail: any = document.querySelector(".ctnCategoryDetail")
+    const categoryDetail: any = document.querySelector(".categoryDetail")
+
+    category.addEventListener("change", () => {
+      categoryDetail.innerHTML = ""
+      this.adminCategoriesService.findAllCategoryDetailByCategory(category.value).subscribe((response: any) => {
+        ctnCategoryDetail.style.display = "block"
+
+        for (let i = 0; i < response.length; i++) {
+          categoryDetail.innerHTML += `
+            <option value="" hidden>Chọn loại danh mục sản phẩm</option>
+            <option value="${response[i].id}">${response[i].size}</option>
+          `
+        }
+      })
+    })
+  }
+
+  private handlerAddFormType() {
     const ctnTypes: HTMLElement | any = document.querySelector(".ctnTypes")
     const addFormType: HTMLElement | any = document.querySelector(".addFormType")
 
@@ -185,117 +212,7 @@ export class AddProductComponent implements OnInit {
         </div>
       </div>
     `
-    const inpForm = document.querySelectorAll(".inpForm")
-    inpForm.forEach((event: any) => {
-      event.addEventListener("focus", () => {
-        event.style.boxShadow = '0 0 0 2px rgba(13, 110, 253, .25)'
-      })
-      event.addEventListener("blur", () => {
-        event.style.boxShadow = 'none'
-      })
-    })
-
-    const inpNumber: any = document.querySelectorAll(".inpNumber")
-    inpNumber.forEach((event: any) => {
-      event.addEventListener("blur", () => {
-        if (event.value < 0) {
-          event.style.boxShadow = "0 0 0 2px lightcoral"
-        } else {
-          event.style.boxShadow = "none"
-        }
-      })
-    })
-
-    // thay đổi giá khuyến mãi
-    const inpDiscount = document.querySelectorAll(".inpDiscount")
-    inpDiscount.forEach((event: any) => {
-      event.addEventListener("input", () => {
-        if (event.value < 0) {
-          event.value = 0
-        }
-
-        const inpPrice = event.parentNode.parentNode.querySelector(".inpPrice")
-        const pricePromotional = event.parentNode.parentNode.querySelector(".pricePromotional")
-        if (inpPrice.value != '' && event.value != '') {
-          pricePromotional.innerHTML = `Giá bán: ${Number(inpPrice.value * (100 - event.value) / 100).toLocaleString("vi-VN")} đ`
-        } else {
-          pricePromotional.innerHTML = ''
-        }
-      })
-
-      event.addEventListener("blur", () => {
-        const inpPrice = event.parentNode.parentNode.querySelector(".inpPrice")
-        const pricePromotional = event.parentNode.parentNode.querySelector(".pricePromotional")
-        if (event.value == '' || event.value <= 0) {
-          event.value = 0
-          event.style.boxShadow = 'none'
-          pricePromotional.innerHTML = `Giá bán: ${Number(inpPrice.value * (100 - event.value) / 100).toLocaleString("vi-VN")} đ`
-        }
-      })
-    })
-
-    const inpPrice = document.querySelectorAll(".inpPrice")
-    inpPrice.forEach((event: any) => {
-      event.addEventListener("input", () => {
-        const inpDiscount = event.parentNode.parentNode.querySelector(".inpDiscount")
-        const pricePromotional = event.parentNode.parentNode.querySelector(".pricePromotional")
-        if (event.value > 0 && event.value != '' && inpDiscount.value >= 0) {
-          pricePromotional.innerHTML = `Giá bán: ${Number(event.value * (100 - inpDiscount.value) / 100).toLocaleString("vi-VN")} đ`
-        } else {
-          pricePromotional.innerHTML = ''
-        }
-      })
-    })
-
-    // có sự kiện thêm form type
-    addFormType.addEventListener("click", () => {
-      var typeProduct: any = document.createElement("div")
-      typeProduct.setAttribute("class", "type-product mt-3")
-      typeProduct.style = "display: flex; border: solid 1px lightgray; padding: 5px 10px 10px 10px;"
-      typeProduct.innerHTML += `
-        <div class="form-group">
-          <label>Tên loại của sản phẩm</label>
-          <input type="text" class="form-control inpForm inpSize" style="width: 250px;">
-        </div>
-
-        <div class="form-group mx-4">
-          <label>Giá gốc</label>
-          <input type="number" class="form-control inpForm inpNumber inpPrice">
-          <span class="pricePromotional"></span>
-        </div>
-
-        <div class="form-group">
-          <label>Số lượng</label>
-          <input type="number" class="form-control inpForm inpNumber inpQuantity">
-        </div>
-
-        <div class="form-group mx-4">
-          <label>Khuyến mãi</label>
-          <input type="number" class="form-control inpForm inpNumber inpDiscount" value="0">
-        </div>
-
-        <div class="form-group" style="margin-right: 20px;">
-          <label>Trạng thái</label>
-          <select class="form-select inpForm inpActivePd">
-            <option value="true">Đang bán</option>
-            <option value="false">Ngừng bán</option>
-          </select>
-        </div>
-
-        <div class="form-group mt-3">
-          <i class="fa-solid fa-trash-can removeFormType" style="padding: 10px; background-color: lightcoral; border: none; color: white; user-select: none; cursor: pointer; border-radius: 10px; white-space: nowrap; font-size: 20px;"></i>
-        </div>
-    `
-      ctnTypes.appendChild(typeProduct)
-
-      const removeFormType = document.querySelectorAll(".removeFormType")
-      removeFormType.forEach((event, i) => {
-        event.addEventListener("click", () => {
-          var formType: any = event.parentNode?.parentNode
-          formType.remove()
-        })
-      })
-
+    const actionFormType = () => {
       const inpForm = document.querySelectorAll(".inpForm")
       inpForm.forEach((event: any) => {
         event.addEventListener("focus", () => {
@@ -351,12 +268,65 @@ export class AddProductComponent implements OnInit {
           const inpDiscount = event.parentNode.parentNode.querySelector(".inpDiscount")
           const pricePromotional = event.parentNode.parentNode.querySelector(".pricePromotional")
           if (event.value > 0 && event.value != '' && inpDiscount.value >= 0) {
-            pricePromotional.innerHTML = `Giá bán: ${Number(event.value * (100 - inpDiscount.value) / 100).toLocaleString("vi-VN")}`
+            pricePromotional.innerHTML = `Giá bán: ${Number(event.value * (100 - inpDiscount.value) / 100).toLocaleString("vi-VN")} đ`
           } else {
             pricePromotional.innerHTML = ''
           }
         })
       })
+    }
+    actionFormType()
+
+    // có sự kiện thêm form type
+    addFormType.addEventListener("click", () => {
+      var typeProduct: any = document.createElement("div")
+      typeProduct.setAttribute("class", "type-product mt-3")
+      typeProduct.style = "display: flex; border: solid 1px lightgray; padding: 5px 10px 10px 10px;"
+      typeProduct.innerHTML += `
+        <div class="form-group">
+          <label>Tên loại của sản phẩm</label>
+          <input type="text" class="form-control inpForm inpSize" style="width: 250px;">
+        </div>
+
+        <div class="form-group mx-4">
+          <label>Giá gốc</label>
+          <input type="number" class="form-control inpForm inpNumber inpPrice">
+          <span class="pricePromotional"></span>
+        </div>
+
+        <div class="form-group">
+          <label>Số lượng</label>
+          <input type="number" class="form-control inpForm inpNumber inpQuantity">
+        </div>
+
+        <div class="form-group mx-4">
+          <label>Khuyến mãi</label>
+          <input type="number" class="form-control inpForm inpNumber inpDiscount" value="0">
+        </div>
+
+        <div class="form-group" style="margin-right: 20px;">
+          <label>Trạng thái</label>
+          <select class="form-select inpForm inpActivePd">
+            <option value="true">Đang bán</option>
+            <option value="false">Ngừng bán</option>
+          </select>
+        </div>
+
+        <div class="form-group mt-3">
+          <i class="fa-solid fa-trash-can removeFormType" style="padding: 10px; background-color: lightcoral; border: none; color: white; user-select: none; cursor: pointer; border-radius: 10px; white-space: nowrap; font-size: 20px;"></i>
+        </div>
+    `
+      ctnTypes.appendChild(typeProduct)
+
+      const removeFormType = document.querySelectorAll(".removeFormType")
+      removeFormType.forEach((event, i) => {
+        event.addEventListener("click", () => {
+          var formType: any = event.parentNode?.parentNode
+          formType.remove()
+        })
+      })
+
+      actionFormType()
     })
   }
 
@@ -385,7 +355,6 @@ export class AddProductComponent implements OnInit {
       fileImage.addEventListener("change", () => {
         if (fileImage.files && fileImage.files[0]) {
           if (fileImage.files[0].size <= maxSize && checkImage.test(fileImage.files[0].name)) {
-            console.log(fileImage.files[0])
             uploadImage.style.border = 'solid 1px lightgray'
             removeImage.style.display = "block"
             uploadImage.src = URL.createObjectURL(fileImage.files[0]);
@@ -502,12 +471,10 @@ export class AddProductComponent implements OnInit {
 
     inpForm.forEach((event: any) => {
       event.addEventListener("input", () => {
-        if (event.value != '') {
-          const name = event.getAttribute("name")
-          for (const key in this.message) {
-            if (key == name) {
-              this.message[key] = ''
-            }
+        const name = event.getAttribute("name")
+        for (const key in this.message) {
+          if (key == name) {
+            this.message[key] = ''
           }
         }
       })

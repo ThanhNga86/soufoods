@@ -28,10 +28,20 @@ public class AdminUserController {
 
 	@GetMapping("")
 	public ResponseEntity<?> users(@RequestParam("pageNumber") Optional<Integer> pageNumber,
-			@RequestParam("totalPage") Optional<Integer> totalPage) {
-		return ResponseEntity.ok(adminUserService.findAll(pageNumber, totalPage));
+			@RequestParam("sizePage") Optional<Integer> sizePage) {
+		return ResponseEntity.ok(adminUserService.findAll(pageNumber, sizePage));
 	}
 
+	@GetMapping("/all")
+	public ResponseEntity<?> findAll() {
+		return ResponseEntity.ok(adminUserService.findAll());
+	}
+	
+	@PostMapping("/findAllByEmail")
+	public ResponseEntity<?> findAllByEmail(@RequestBody String email) {
+		return ResponseEntity.ok(adminUserService.findAllByEmail(email));
+	}
+	
 	@PostMapping("/filter")
 	public ResponseEntity<?> filterUser(@RequestBody FilterUserRequest request) {
 		return ResponseEntity.ok(adminUserService.filterUser(request));

@@ -1,5 +1,6 @@
 package com.soufoods.repo;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.domain.Page;
@@ -17,6 +18,9 @@ public interface UserRepository extends JpaRepository<User, Long> {
 	
 	Optional<User> findByEmail(String email);
 
+	@Query("from User u where u.email like %:email% and u.role <> 'ROLE_ADMIN'")
+	List<User> findAllByEmail(@Param("email") String email);
+	
 	@Query("from User u where " + "(:search is null or u.email like %:search%) "
 			+ "and u.role <> 'ROLE_ADMIN'" 
 			+ "and (:active is null or u.active = :active) "

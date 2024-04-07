@@ -70,8 +70,8 @@
 	color: gray;
 	cursor: pointer;
 	padding: 2px;
-	background-color: white;
 	opacity: 0.6;
+	background-color: white;
 }
 
 #containerProduct .formAdd .ctnPoster .removeImage:hover{

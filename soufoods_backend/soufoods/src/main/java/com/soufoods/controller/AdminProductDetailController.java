@@ -24,14 +24,8 @@ import lombok.RequiredArgsConstructor;
 public class AdminProductDetailController {
 	private final AdminProductDetailService productDetailService;
 
-	@GetMapping("/{id}")
-	public ResponseEntity<?> productDetail(@PathVariable("id") Long id) {
-		Map<String, Object> map = productDetailService.findById(id);
-		return ResponseEntity.ok(map);
-	}
-	
 	@GetMapping("/all/{id}")
-	public ResponseEntity<?> findAllByProduct(Product product) {
+	public ResponseEntity<?> findAllByProduct(@PathVariable("id") Product product) {
 		return ResponseEntity.ok(productDetailService.findAllByProduct(product));
 	}
 

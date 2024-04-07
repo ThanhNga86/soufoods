@@ -3,14 +3,19 @@ package com.soufoods.entity;
 import java.io.Serializable;
 import java.util.Date;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
-import jakarta.persistence.UniqueConstraint;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,24 +24,26 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "Vouchers", uniqueConstraints = {
-	    @UniqueConstraint(columnNames = {"userId"})
-})
+@Table(name = "Vouchers")
 public class Voucher implements Serializable {
 	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String discountCode;
-	private Integer quantity;
-	private Double discount;
+	private Integer discount;
+	private Double priceMin;
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	@Column(columnDefinition = "DATE")
 	private Date expiration;
-	private boolean permanent;
+	private boolean freeShip;
+	private boolean discountType;
 	private boolean active;
+	private String messageType;
 	@ManyToOne
-	@JoinColumn(name = "userId")
+	@JoinColumn(name = "UserId")
 	private User user;
-	@ManyToOne
-	@JoinColumn(name = "productId")
-	private Product product;
+	@JsonIgnore
+	@OneToOne(mappedBy = "voucher")
+	private Order order;
 }

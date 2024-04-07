@@ -3,7 +3,6 @@ package com.soufoods.model;
 
 import java.util.List;
 
-import com.soufoods.entity.Images;
 import com.soufoods.entity.Product;
 
 import lombok.AllArgsConstructor;
@@ -19,5 +18,4 @@ public class AdminProductResponse {
 	private int totalPage;
 	private Long total;
 	private List<Product> products;
-	private List<Images> images;
 }

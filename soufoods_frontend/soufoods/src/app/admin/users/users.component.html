@@ -106,30 +106,31 @@
     </table>
     <div class="total">Tổng người dùng: {{total}}</div>
 
-    <ul id="paging" *ngIf="total > 0">
-      <span class="page" (click)="setPageNumber(1)"><li>Đầu</li></span>
-      <span *ngFor="let i of totalPage">
-        <span *ngIf="i <= 5 && pageNumber <= 2">
-          <span *ngIf="i == pageNumber">
+    <ul id="paging" *ngIf="total > 0 && totalPage.length > 1">
+      <span class="page" *ngIf="pageNumber > 1" (click)="setPageNumber(pageNumber - 1)"><li>Trước đó</li></span>
+      <ng-container *ngFor="let i of totalPage">
+        <ng-container *ngIf="i <= 5 && pageNumber <= 2">
+          <ng-container *ngIf="i == pageNumber">
             <span class="page" (click)="setPageNumber(i)"><li style="background-color: rgb(253, 142, 105);">{{i}}</li></span>
-          </span>
-          <span *ngIf="i != pageNumber">
+          </ng-container>
+          <ng-container *ngIf="i != pageNumber">
             <span class="page" (click)="setPageNumber(i)"><li>{{i}}</li></span>
-          </span>
-        </span>
+          </ng-container>
+        </ng-container>
 
-        <span *ngIf="pageNumber > 2">
-          <span *ngIf="i >= pageNumber-2 && i <= pageNumber+2">
-            <span *ngIf="i==pageNumber">
+        <ng-container *ngIf="pageNumber > 2">
+          <ng-container *ngIf="i >= pageNumber-2 && i <= pageNumber+2">
+            <ng-container *ngIf="i==pageNumber">
               <span class="page" (click)="setPageNumber(i)"><li style="background-color: rgb(253, 142, 105);">{{i}}</li></span>
-            </span>
-            <span *ngIf="i!=pageNumber">
+            </ng-container>
+            <ng-container *ngIf="i!=pageNumber">
               <span class="page" (click)="setPageNumber(i)"><li>{{i}}</li></span>
-            </span>
-          </span>
-        </span>
-      </span>
-      <span class="page" (click)="setPageNumber(totalPage.length)"><li>Cuối</li></span>
+            </ng-container>
+          </ng-container>
+        </ng-container>
+
+      </ng-container>
+      <span class="page" *ngIf="pageNumber < totalPage.length" (click)="setPageNumber(pageNumber + 1)"><li>Kế tiếp</li></span>
     </ul>
   </div>
 </div>

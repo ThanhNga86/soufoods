@@ -14,8 +14,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.soufoods.entity.Categories;
+import com.soufoods.entity.CategoryDetail;
 import com.soufoods.entity.Images;
 import com.soufoods.entity.Product;
+import com.soufoods.entity.Review;
 import com.soufoods.model.AdminCategoryResponse;
 import com.soufoods.model.FilterCategoryRequest;
 import com.soufoods.repo.CategoryRepository;
@@ -42,7 +44,7 @@ public class AdminCategoryService {
 	}
 
 	public AdminCategoryResponse findAll(Optional<Integer> pageNumber, Optional<Integer> sizePage1) {
-		int sizePage = sizePage1.orElse(20);
+		int sizePage = sizePage1.orElse(10);
 		Pageable page = PageRequest.of(pageNumber.orElse(1) - 1, sizePage, Sort.by("id").reverse());
 		Page<Categories> categories = categoryRepository.findAll(page);
 		long total = categories.getTotalElements();
@@ -62,9 +64,9 @@ public class AdminCategoryService {
 	}
 
 	public AdminCategoryResponse filterCategory(FilterCategoryRequest request) {
-		int sizePage = 20;
+		int sizePage = 10;
 		Pageable page = PageRequest.of(request.getPageNumber() - 1, sizePage);
-		Page<Categories> categories = categoryRepository.filterCategory(request.getSearch(), request.getActive(), page);
+		Page<Categories> categories = categoryRepository.filterCategory(request.getSearch(), request.getActive(), request.getActiveCd(), page);
 		long total = categories.getTotalElements();
 		int totalPage = (int) (total / sizePage);
 		if (total % sizePage != 0) {
@@ -102,6 +104,7 @@ public class AdminCategoryService {
 			}
 			categoryRepository.save(category);
 			map.put("status", "200");
+			map.put("categoryId", String.valueOf(category.getId()));
 		} else {
 			map.put("status", "401");
 		}
@@ -129,8 +132,9 @@ public class AdminCategoryService {
 			}
 			categoryId.get().setName(category.getName());
 			categoryId.get().setActive(category.isActive());
-			categoryRepository.save(categoryId.get());
+			categoryRepository.saveAndFlush(categoryId.get());
 			map.put("status", "200");
+			map.put("categoryId", String.valueOf(categoryId.get().getId()));
 		} else {
 			map.put("status", "401");
 		}
@@ -142,10 +146,20 @@ public class AdminCategoryService {
 		Optional<Categories> category = categoryRepository.findById(categoryId.get());
 		if (category.isPresent()) {
 			try {
-				List<Images> images = new ArrayList<>();
-				for (Product product : category.get().getListProduct()) {
-					for (Images image : product.getListImages()) {
-						images.add(image);
+				List<String> images = new ArrayList<>();
+				for (CategoryDetail categoryD : category.get().getListCategoryDetail()) {
+					images.add(categoryD.getImage());
+					for (Product product : categoryD.getListProduct()) {
+						images.add(product.getImage());
+						for (Images image : product.getListImages()) {
+							images.add(image.getName());
+						}
+						
+						for (Review review : product.getListReview()) {
+							for (Images image : review.getListImages()) {
+								images.add(image.getName());
+							}
+						}
 					}
 				}
 
@@ -153,8 +167,8 @@ public class AdminCategoryService {
 				awsS3Service.deleteFileS3(category.get().getImage());
 
 				if (!images.isEmpty()) {
-					for (Images image : images) {
-						awsS3Service.deleteFileS3(image.getName());
+					for (String image : images) {
+						awsS3Service.deleteFileS3(image);
 					}
 				}
 				map.put("status", "200");
@@ -168,5 +182,4 @@ public class AdminCategoryService {
 		}
 		return map;
 	}
-
 }

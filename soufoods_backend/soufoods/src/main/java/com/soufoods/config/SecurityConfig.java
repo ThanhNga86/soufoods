@@ -39,6 +39,7 @@ public class SecurityConfig {
 			.and()
 			.authenticationProvider(authenticationProvider)
 			.addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class);
+		http.rememberMe().tokenValiditySeconds(60 * 60 * 24 * 7);
 		http.csrf(csrf -> csrf.disable());
 		return http.build();
 	}

@@ -18,20 +18,9 @@ import lombok.RequiredArgsConstructor;
 public class AdminProductDetailService {
 	private final ProductDetailRepository productDetailRepository;
 
-	public Map<String, Object> findById(Long id) {
-		Map<String, Object> map = new HashMap<>();
-		Optional<ProductDetail> productDetail = productDetailRepository.findById(id);
-		if(productDetail.isPresent()) {
-			map.put("status", "200");
-			map.put("productDetail", productDetail.get());
-		} else {
-			map.put("status", "401");
-		}
-		return map;
-	}
-	
 	public List<ProductDetail> findAllByProduct(Product product) {
-		return productDetailRepository.findAllByProductId(product);
+		List<ProductDetail> productDetails = productDetailRepository.findAllByProduct(product);
+		return productDetails;
 	}
 	
 	public Map<String, String> addProductDetail(ProductDetail productD) {

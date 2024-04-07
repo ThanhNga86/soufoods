@@ -14,12 +14,20 @@ export class AdminUsersService {
     return this.httpClient.get(`${this.userAuthService.getHost()}/api/admin/users/${email}`)
   }
 
+  public findAllByEmail(search: any) {
+    return this.httpClient.post(`${this.userAuthService.getHost()}/api/admin/users/findAllByEmail`, search)
+  }
+
   public filter(filters: any) {
     return this.httpClient.post(`${this.userAuthService.getHost()}/api/admin/users/filter`, filters)
   }
 
-  public findAll(pageNumber: number, totalPage: number) {
-    return this.httpClient.get(`${this.userAuthService.getHost()}/api/admin/users?pageNumber=${pageNumber}&totalPage=${totalPage}`)
+  public findAll(pageNumber: number, sizePage: number) {
+    return this.httpClient.get(`${this.userAuthService.getHost()}/api/admin/users?pageNumber=${pageNumber}&sizePage=${sizePage}`)
+  }
+
+  public findAllUser() {
+    return this.httpClient.get(`${this.userAuthService.getHost()}/api/admin/users/all`)
   }
 
   public update(updateForm: NgForm) {

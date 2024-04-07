@@ -26,8 +26,6 @@ export class UsersComponent implements OnInit {
     this.handleFilter()
 
     this.findAll();
-
-    this.resetFunctions()
   }
 
   private resetFunctions() {
@@ -39,7 +37,7 @@ export class UsersComponent implements OnInit {
       } else {
         clearInterval(loadDataTime)
       }
-    }, 300)
+    }, 200)
   }
 
   private handleFilter() {
@@ -143,9 +141,11 @@ export class UsersComponent implements OnInit {
   }
 
   public findAll(): void {
-    const sizePage: number = 20
+    const sizePage: number = 10
     const loading: HTMLElement | any = document.querySelector(".loading")
     const table: HTMLElement | any = document.querySelector(".table-users")
+    const row: HTMLElement | any = table.querySelectorAll("tr")
+
     loading.style.display = 'block'
     table.style.display = 'none'
 
@@ -154,6 +154,13 @@ export class UsersComponent implements OnInit {
       this.total = response.total
       this.totalPage = Array.from({ length: response.totalPage }, (_, index) => index + 1);
 
+      if (this.total == 0) {
+        for (let i = 1; i < row.length; i++) {
+          row[i].remove()
+        }
+      }
+
+      this.resetFunctions()
       loading.style.display = 'none'
       table.style.display = 'block'
     })
@@ -162,6 +169,8 @@ export class UsersComponent implements OnInit {
   public filter(): void {
     const loading: HTMLElement | any = document.querySelector(".loading")
     const table: HTMLElement | any = document.querySelector(".table-users")
+    const row: HTMLElement | any = table.querySelectorAll("tr")
+
     loading.style.display = 'block'
     table.style.display = 'none'
 
@@ -170,6 +179,13 @@ export class UsersComponent implements OnInit {
       this.total = response.total
       this.totalPage = Array.from({ length: response.totalPage }, (_, index) => index + 1);
 
+      if (this.total == 0) {
+        for (let i = 1; i < row.length; i++) {
+          row[i].remove()
+        }
+      }
+
+      this.resetFunctions()
       loading.style.display = 'none'
       table.style.display = 'block'
     })
@@ -188,8 +204,6 @@ export class UsersComponent implements OnInit {
     } else {
       this.findAll()
     }
-
-    this.resetFunctions()
   }
 
   public update(updateForm: NgForm, i: number): any {
@@ -246,7 +260,8 @@ export class UsersComponent implements OnInit {
                 icon: "success",
                 confirmButtonText: "Đồng ý",
               });
-              this.findAll()
+
+              this.setPageNumber(this.pageNumber)
             } else {
               if (response.error) {
                 Swal.fire({
@@ -284,12 +299,10 @@ export class UsersComponent implements OnInit {
 
     inpForm.forEach((event: any) => {
       event.addEventListener("input", () => {
-        if (event.value != '') {
-          const name = event.getAttribute("name")
-          for (const key in this.message) {
-            if (key == name) {
-              this.message[key] = ''
-            }
+        const name = event.getAttribute("name")
+        for (const key in this.message) {
+          if (key == name) {
+            this.message[key] = ''
           }
         }
       })

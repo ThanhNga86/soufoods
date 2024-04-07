@@ -17,5 +17,6 @@ public class FilterProductRequest {
 	private Boolean active;
 	private Boolean activePd;
 	private Long categoryId;
+	private Long categoryDetailId;
 	private Integer pageNumber;
 }

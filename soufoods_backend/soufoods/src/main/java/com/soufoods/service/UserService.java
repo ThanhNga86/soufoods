@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Random;
 import java.util.regex.Pattern;
 
 import org.springframework.security.authentication.AuthenticationManager;
@@ -127,6 +128,7 @@ public class UserService {
 			user.setPassword(passwordEncoder.encode(user.getPassword()));
 			user.setRole(Role.ROLE_USER);
 			user.setAccount(Account.Local);
+			user.setCreateDate(new Date());
 			userRepository.save(user);
 		} else {
 			map.put("status", "401");
@@ -237,7 +239,19 @@ public class UserService {
 	public boolean forgotPassword(ForgotPasswordRequest request) {
 		Optional<User> checkUser = userRepository.findByEmail(request.getEmail());
 		if (checkUser.isPresent()) {
-			String validCode = emailService.sendEmail(checkUser.get());
+			String subject = "Thông tin mã xác thực đặt lại mật khẩu";
+			String validCode = "";
+			Random rd = new Random();
+			for (int i = 0; i < 6; i++) {
+				validCode += String.valueOf(rd.nextInt(9) + 0);
+			}
+			String content = "Chào " + checkUser.get().getFirstName() + ".<br>"
+					+ "Chúng tôi nhận được yêu cầu lấy lại mật khẩu của bạn qua email. Để hoàn tất quá trình lấy lại mật khẩu, vui lòng sử dụng mã xác nhận sau đây để đặt lại mật khẩu của bạn:<br>"
+					+ "Mã xác nhận: <span style=\"color: skyblue; font-size: 16px; font-weight: bold;\">" + validCode +"</span><br>"
+					+ "Vui lòng nhập mã xác nhận này vào trang đặt lại mật khẩu của chúng tôi để tiếp tục quá trình đặt lại mật khẩu của bạn.<br>"
+					+ "Đây là email gửi tự động, vui lòng không phản hồi.<br>"
+					+ "Nếu bạn không gửi yêu cầu này, vui lòng bỏ qua email này.<br>";
+			emailService.sendEmail(checkUser.get().getEmail(), subject, content);
 			session.setAttribute("email", checkUser.get().getEmail());
 			session.setAttribute("currentTimeValid", new Date(System.currentTimeMillis() + 1000 * 60));
 			session.setAttribute("validCode", validCode);

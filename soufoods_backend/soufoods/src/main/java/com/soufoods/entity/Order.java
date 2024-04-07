@@ -42,9 +42,9 @@ public class Order implements Serializable {
 	@ManyToOne
 	@JoinColumn(name = "userId")
 	private User user;
-	@ManyToOne
-	@JoinColumn(name = "productId")
-	private Product product;
+	@OneToOne(cascade = CascadeType.REMOVE)
+	@JoinColumn(name = "voucherId")
+	private Voucher voucher;
 	@JsonIgnore
 	@OneToOne(mappedBy = "order", cascade = CascadeType.REMOVE)
 	private Payments payments;

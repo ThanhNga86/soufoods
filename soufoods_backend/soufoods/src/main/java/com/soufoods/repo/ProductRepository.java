@@ -8,12 +8,16 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import com.soufoods.entity.CategoryDetail;
 import com.soufoods.entity.Product;
 
 public interface ProductRepository extends JpaRepository<Product, Long> {
 
 	@Query("from Product order by RAND()")
 	List<Product> produitSimilaire();
+	
+	@Query("from Product u where u.categoryDetail = ?1")
+	List<Product> findAllByCategory(CategoryDetail categoryD);
 
 	@Query("select distinct u from Product u LEFT JOIN FETCH u.listProductDetails pd where "
 			+ "(:id is null or u.id = :id) "
@@ -22,9 +26,10 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 			+ "and (:discount is null or (:discount = 0 and pd.discount = 0) or (:discount = 1 and pd.discount > 0)) "
 			+ "and (:active is null or u.active = :active) " 
 			+ "and (:activePd is null or pd.active = :activePd) " 
-			+ "and (:category is null or u.category.id = :category) "
+			+ "and (:category is null or u.categoryDetail.category.id = :category) "
+			+ "and (:categoryDetail is null or u.categoryDetail.id = :categoryDetail) "
 			+ "order by u.id desc")
 	Page<Product> filterProduct(@Param("id") Long id, @Param("name") String name, @Param("quantity") Integer quantity, @Param("discount") Double discount , @Param("active") Boolean active,
-			@Param("activePd") Boolean activePd, @Param("category") Long categoryId, Pageable page);
+			@Param("activePd") Boolean activePd, @Param("category") Long categoryId, @Param("categoryDetail") Long categoryDetailId, Pageable page);
 	
 }

@@ -44,7 +44,7 @@ public class AdminProductService {
 	}
 
 	public AdminProductResponse findAll(Optional<Integer> pageNumber, Optional<Integer> sizePage1) {
-		int sizePage = sizePage1.orElse(20);
+		int sizePage = sizePage1.orElse(10);
 		Pageable page = PageRequest.of(pageNumber.orElse(1) - 1, sizePage, Sort.by("id").reverse());
 		Page<Product> products = productRepository.findAll(page);
 		long total = products.getTotalElements();
@@ -60,21 +60,21 @@ public class AdminProductService {
 	}
 
 	public AdminProductResponse filter(FilterProductRequest request) {
-		int sizePage = 20;
+		int sizePage = 10;
 		Pageable page = PageRequest.of(request.getPageNumber() - 1, sizePage);
 		Page<Product> products = null;
 
 		if (request.getSearch() == null) {
 			products = productRepository.filterProduct(null, null, request.getQuantity(), request.getDiscount(),
-					request.getActive(), request.getActivePd(), request.getCategoryId(), page);
+					request.getActive(), request.getActivePd(), request.getCategoryId(), request.getCategoryDetailId(), page);
 		} else {
 			try {
 				Long id = Long.parseLong(request.getSearch());
 				products = productRepository.filterProduct(id, null, request.getQuantity(), request.getDiscount(),
-						request.getActive(), request.getActivePd(), request.getCategoryId(), page);
+						request.getActive(), request.getActivePd(), request.getCategoryId(), request.getCategoryDetailId(), page);
 			} catch (NumberFormatException e) {
 				products = productRepository.filterProduct(null, request.getSearch(), request.getQuantity(),
-						request.getDiscount(), request.getActivePd(), request.getActive(), request.getCategoryId(), page);
+						request.getDiscount(), request.getActivePd(), request.getActive(), request.getCategoryId(), request.getCategoryDetailId(), page);
 			}
 		}
 
@@ -109,8 +109,8 @@ public class AdminProductService {
 			check = false;
 		}
 
-		if (product.getCategory() == null) {
-			map.put("category", "Vui lòng chọn danh mục sản phẩm");
+		if (product.getCategoryDetail() == null) {
+			map.put("categoryDetail", "Vui lòng chọn loại sản phẩm chi tiết");
 			check = false;
 		}
 
@@ -149,28 +149,27 @@ public class AdminProductService {
 			map.put("name", "Vui lòng nhập tên sản phẩm");
 			check = false;
 		}
-
+		
 		if (product.getDescribes().isEmpty()) {
 			map.put("describes", "Vui lòng nhập mô tả sản phẩm");
 			check = false;
 		}
 
-		if (product.getCategory() == null) {
-			map.put("category", "Vui lòng chọn danh mục sản phẩm");
+		if (product.getCategoryDetail() == null) {
+			map.put("category", "Vui lòng chọn loại sản phẩm");
 			check = false;
 		}
 
 		if (check) {
 			productId.get().setName(product.getName());
-			productId.get().setType(product.getType());
 			productId.get().setActive(product.isActive());
 			productId.get().setDescribes(product.getDescribes());
-			productId.get().setCategory(product.getCategory());
+			productId.get().setCategoryDetail(product.getCategoryDetail());
 			if (fileImage.isPresent()) {
 				awsS3Service.deleteFileS3(productId.get().getImage());
 				productId.get().setImage(awsS3Service.uploadFileS3(fileImage.get()));
 			}
-			productRepository.save(productId.get());
+			productRepository.saveAndFlush(productId.get());
 			map.put("status", "200");
 			map.put("productId", String.valueOf(productId.get().getId()));
 
@@ -212,6 +211,7 @@ public class AdminProductService {
 				}
 
 				productRepository.delete(product.get());
+				awsS3Service.deleteFileS3(product.get().getImage());
 				for (Images image : product.get().getListImages()) {
 					awsS3Service.deleteFileS3(image.getName());
 					imagesRepository.delete(image);

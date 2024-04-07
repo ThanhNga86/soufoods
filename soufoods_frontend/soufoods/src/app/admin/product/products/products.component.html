@@ -7,10 +7,11 @@
         <th>Mã số</th>
         <th>Tên sản phẩm</th>
         <th>Hình ảnh</th>
-        <th>Loại sản phẩm</th>
+        <th>Loại hàng</th>
         <th>Ngày tạo</th>
         <th>Trạng thái</th>
         <th>Danh mục</th>
+        <th>Loại sản phẩm</th>
         <th></th>
       </tr>
 
@@ -20,7 +21,7 @@
         <td style="display: flex; justify-content: center; align-items: center; border: none;">
           <div class="viewDetailImage">
             <img [src]="product.imageUrl"  width="100%" height="100%">
-            <div class="viewImage">{{'Xem '+ (product.images.length + 1) +' hình'}}</div>
+            <div class="viewImage" *ngIf="product.images && product.images.length > 0">{{'Xem '+ (product.images.length + 1) +' hình'}}</div>
           </div>
         </td>
         <td>{{product.type}}</td>
@@ -29,7 +30,8 @@
           <span class="actived" *ngIf="product.active">Đang bán</span>
           <span class="unActive" *ngIf="!product.active">Ngừng bán</span>
         </td>
-        <td>{{product.category.name}}</td>
+        <td>{{product.categoryDetail.category.name}}</td>
+        <td>{{product.categoryDetail.size}}</td>
 
         <td>
           <div class="action">
@@ -80,7 +82,7 @@
                       </div>
 
                       <div class="form-group">
-                        <label>Loại sản phẩm ( Không bắt buộc )</label>
+                        <label>Loại hàng (Không bắt buộc)</label>
                         <input type="text" [value]="product.type" class="form-control inpTypeP">
                         <div class="message">{{message.name}}</div>
                       </div>
@@ -102,11 +104,23 @@
                         <select class="form-select inpForm category">
                           <option value="" hidden>Chọn danh mục sản phẩm</option>
                           <ng-container *ngFor="let category of categories">
-                            <option *ngIf="category.id==product.category.id" selected [value]="category.id">{{category.name}}</option>
-                            <option *ngIf="category.id!=product.category.id" [value]="category.id">{{category.name}}</option>
+                            <option *ngIf="category.id==product.categoryDetail.category.id" selected [value]="category.id">{{category.name}}</option>
+                            <option *ngIf="category.id!=product.categoryDetail.category.id" [value]="category.id">{{category.name}}</option>
                           </ng-container>>
                         </select>
                         <div class="message">{{message.category}}</div>
+                      </div>
+
+                      <div class="form-group ctnCategoryDetail">
+                        <label>Loại danh mục sản phẩm</label>
+                        <select class="form-select inpForm categoryDetail">
+                          <option value="" hidden>Chọn loại danh mục sản phẩm</option>
+                          <ng-container *ngFor="let categoryD of categoryDetails">
+                            <option *ngIf="categoryD.id==product.categoryDetail.id && categoryD.category.id==product.categoryDetail.category.id" selected [value]="categoryD.id">{{categoryD.size}}</option>
+                            <option *ngIf="categoryD.id!=product.categoryDetail.id && categoryD.category.id==product.categoryDetail.category.id" [value]="categoryD.id">{{categoryD.size}}</option>
+                          </ng-container>>
+                        </select>
+                        <div class="message">{{message.categoryDetail}}</div>
                       </div>
 
                       <div class="form-group">
@@ -143,7 +157,7 @@
         <div class="show-detailImage">
           <i class="hidden-detailImage fa-solid fa-x"></i>
         </div>
-          <div class="show-images">
+        <div class="show-images">
           <div class="row">
             <div class="col-xl-7 col-lg-8 col-md-9 col-sm-10">
               <img class="imagesP" [src]="product.imageUrl" width="100%" height="100%">
@@ -157,30 +171,31 @@
     </table>
     <div class="total">Tổng sản phẩm: {{total}}</div>
 
-    <ul id="paging" *ngIf="total > 0">
-      <span class="page" (click)="setPageNumber(1)"><li>Đầu</li></span>
-      <span *ngFor="let i of totalPage">
-        <span *ngIf="i <= 5 && pageNumber <= 2">
-          <span *ngIf="i == pageNumber">
+    <ul id="paging" *ngIf="total > 0 && totalPage.length > 1">
+      <span class="page" *ngIf="pageNumber > 1" (click)="setPageNumber(pageNumber - 1)"><li>Trước đó</li></span>
+      <ng-container *ngFor="let i of totalPage">
+        <ng-container *ngIf="i <= 5 && pageNumber <= 2">
+          <ng-container *ngIf="i == pageNumber">
             <span class="page" (click)="setPageNumber(i)"><li style="background-color: rgb(253, 142, 105);">{{i}}</li></span>
-          </span>
-          <span *ngIf="i != pageNumber">
+          </ng-container>
+          <ng-container *ngIf="i != pageNumber">
             <span class="page" (click)="setPageNumber(i)"><li>{{i}}</li></span>
-          </span>
-        </span>
+          </ng-container>
+        </ng-container>
 
-        <span *ngIf="pageNumber > 2">
-          <span *ngIf="i >= pageNumber-2 && i <= pageNumber+2">
-            <span *ngIf="i==pageNumber">
+        <ng-container *ngIf="pageNumber > 2">
+          <ng-container *ngIf="i >= pageNumber-2 && i <= pageNumber+2">
+            <ng-container *ngIf="i==pageNumber">
               <span class="page" (click)="setPageNumber(i)"><li style="background-color: rgb(253, 142, 105);">{{i}}</li></span>
-            </span>
-            <span *ngIf="i!=pageNumber">
+            </ng-container>
+            <ng-container *ngIf="i!=pageNumber">
               <span class="page" (click)="setPageNumber(i)"><li>{{i}}</li></span>
-            </span>
-          </span>
-        </span>
-      </span>
-      <span class="page" (click)="setPageNumber(totalPage.length)"><li>Cuối</li></span>
+            </ng-container>
+          </ng-container>
+        </ng-container>
+
+      </ng-container>
+      <span class="page" *ngIf="pageNumber < totalPage.length" (click)="setPageNumber(pageNumber + 1)"><li>Kế tiếp</li></span>
     </ul>
   </div>
 </div>

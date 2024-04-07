@@ -18,7 +18,7 @@ public class ImagesService {
 	private final AwsS3Service awsS3Service;
 
 	public List<Images> findAllByProduct(Product product) {
-		List<Images> images = imagesRepository.findAllByProductId(product);
+		List<Images> images = imagesRepository.findAllByProduct(product);
 		for (Images image : images) {
 			image.setUrl(awsS3Service.getFileS3(image.getName()));
 		}
@@ -26,7 +26,7 @@ public class ImagesService {
 	}
 	
 	public List<Images> findAllByReview(Review review) {
-		List<Images> images = imagesRepository.findAllByReviewId(review);
+		List<Images> images = imagesRepository.findAllByReview(review);
 		for (Images image : images) {
 			image.setUrl(awsS3Service.getFileS3(image.getName()));
 		}

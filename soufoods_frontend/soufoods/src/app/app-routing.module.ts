@@ -1,3 +1,7 @@
+import { OrdersComponent } from './admin/orders/orders.component';
+import { ReviewsComponent } from './admin/reviews/reviews.component';
+import { VouchersComponent } from './admin/voucher/vouchers/vouchers.component';
+import { AddVoucherComponent } from './admin/voucher/add-voucher/add-voucher.component';
 import { ProductsComponent } from './admin/product/products/products.component';
 import { AddProductComponent } from './admin/product/add-product/add-product.component';
 import { CategoriesComponent } from './admin/category/categories/categories.component';
@@ -19,6 +23,10 @@ const routes: Routes = [
       {path: "categories", component: CategoriesComponent},
       {path: "add-product", component: AddProductComponent},
       {path: "products", component: ProductsComponent},
+      {path: "add-voucher", component: AddVoucherComponent},
+      {path: "vouchers", component: VouchersComponent},
+      {path: "orders", component: OrdersComponent},
+      {path: "reviews", component: ReviewsComponent},
     ]
   },
   //{path: 'user', component: UserComponent, canActivate: [AuthGuard]},

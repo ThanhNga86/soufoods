@@ -35,7 +35,7 @@ public class CategoryController {
 	public ResponseEntity<?> productsByCategory(@PathVariable("id") Optional<Long> id) {
 		if (id.isPresent()) {
 			List<Product> products = productRepository.findAll().stream()
-					.filter(p -> p.getCategory().getId() == id.get() && p.getCategory().isActive()).toList();
+					.filter(p -> (p.getCategoryDetail().getId() == id.get() && p.getCategoryDetail().isActive()) && (p.getCategoryDetail().getCategory().getId() == id.get() && p.getCategoryDetail().getCategory().isActive())).toList();
 			return ResponseEntity.ok(products);
 		} else {
 			return ResponseEntity.badRequest().build();

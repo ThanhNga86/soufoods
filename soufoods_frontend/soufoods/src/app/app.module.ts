@@ -17,6 +17,12 @@ import { AddCategoryComponent } from './admin/category/add-category/add-category
 import { CategoriesComponent } from './admin/category/categories/categories.component';
 import { AddProductComponent } from './admin/product/add-product/add-product.component';
 import { ProductsComponent } from './admin/product/products/products.component';
+import { VouchersComponent } from './admin/voucher/vouchers/vouchers.component';
+import { AddVoucherComponent } from './admin/voucher/add-voucher/add-voucher.component';
+import { OrdersComponent } from './admin/orders/orders.component';
+import { ReviewsComponent } from './admin/reviews/reviews.component';
+import { HomeComponent } from './home/home.component';
+import { HeaderComponent } from './layout/header/header.component';
 
 @NgModule({
   declarations: [
@@ -29,6 +35,12 @@ import { ProductsComponent } from './admin/product/products/products.component';
     CategoriesComponent,
     AddProductComponent,
     ProductsComponent,
+    VouchersComponent,
+    AddVoucherComponent,
+    OrdersComponent,
+    ReviewsComponent,
+    HomeComponent,
+    HeaderComponent,
   ],
   imports: [
     BrowserModule,

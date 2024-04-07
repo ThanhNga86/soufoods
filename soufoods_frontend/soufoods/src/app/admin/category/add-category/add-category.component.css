@@ -12,6 +12,19 @@
 	box-shadow: 0 0 0 2px rgba(13, 110, 253, .25);
 }
 
+#containerAddCategory .formAdd .addFormType {
+  margin: 10px 10px 10px 0;
+	padding: 10px;
+	background-color: green;
+	border: none;
+	color: white;
+	user-select: none;
+	cursor: pointer;
+	border-radius: 10px;
+	white-space: nowrap;
+  font-size: 22px;
+}
+
 #containerAddCategory .formAdd .btnSave {
 	margin: 5px 0;
 	padding: 10px 8%;

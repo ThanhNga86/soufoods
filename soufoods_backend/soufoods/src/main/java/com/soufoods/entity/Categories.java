@@ -36,5 +36,5 @@ public class Categories implements Serializable {
 	private boolean active;
 	@JsonIgnore
 	@OneToMany(mappedBy = "category", cascade = CascadeType.REMOVE)
-	private List<Product> listProduct;
+	private List<CategoryDetail> listCategoryDetail;
 }

@@ -17,8 +17,8 @@ export class AdminProductsService {
     return this.httpClient.post(`${this.userAuthService.getHost()}/api/admin/products/filter`, filters)
   }
 
-  public findAll(pageNumber: number, totalPage: number) {
-    return this.httpClient.get(`${this.userAuthService.getHost()}/api/admin/products?pageNumber=${pageNumber}&totalPage=${totalPage}`)
+  public findAll(pageNumber: number, sizePage: number) {
+    return this.httpClient.get(`${this.userAuthService.getHost()}/api/admin/products?pageNumber=${pageNumber}&sizePage=${sizePage}`)
   }
 
   public add(formData: FormData) {
@@ -33,7 +33,7 @@ export class AdminProductsService {
     return this.httpClient.delete(`${this.userAuthService.getHost()}/api/admin/products/${id}`)
   }
 
-  public findAllProductD(id: number) {
+  public findAllProductDetailByProduct(id: number) {
     return this.httpClient.get(`${this.userAuthService.getHost()}/api/admin/productdetail/all/${id}`)
   }
 

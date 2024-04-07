@@ -41,20 +41,14 @@ public class Product implements Serializable {
 	private Date createDate = new Date();
 	private boolean active;
 	@ManyToOne
-	@JoinColumn(name = "categoryId")
-	private Categories category;
+	@JoinColumn(name = "categoryDetailId")
+	private CategoryDetail categoryDetail;
 	@JsonIgnore
 	@OneToMany(mappedBy = "product", cascade = CascadeType.REMOVE)
 	private List<Favorite> listFavorite;
 	@JsonIgnore
-	@OneToMany(mappedBy = "product")
-	private List<Order> listOrder;
-	@JsonIgnore
 	@OneToMany(mappedBy = "product", cascade = CascadeType.REMOVE)
 	private List<Review> listReview;
-	@JsonIgnore
-	@OneToMany(mappedBy = "product", cascade = CascadeType.REMOVE)
-	private List<Voucher> listVoucher;
 	@JsonIgnore
 	@OneToMany(mappedBy = "product", cascade = CascadeType.REMOVE)
 	private List<Images> listImages;

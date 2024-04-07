@@ -30,12 +30,12 @@ public class AdminProductController {
 
 	@GetMapping("")
 	public ResponseEntity<?> products(@RequestParam("pageNumber") Optional<Integer> pageNumber,
-			@RequestParam("totalPage") Optional<Integer> totalPage) {
-		return ResponseEntity.ok(productService.findAll(pageNumber, totalPage));
+			@RequestParam("sizePage") Optional<Integer> sizePage) {
+		return ResponseEntity.ok(productService.findAll(pageNumber, sizePage));
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<?> products(@PathVariable("id") Long id) {
+	public ResponseEntity<?> product(@PathVariable("id") Long id) {
 		Map<String, Object> map = productService.findById(id);
 		return ResponseEntity.ok(map);
 	}

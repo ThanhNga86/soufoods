@@ -12,8 +12,8 @@ import com.soufoods.entity.Review;
 public interface ImagesRepository extends JpaRepository<Images, Long> {
 	
 	@Query("from Images u where u.product = ?1")
-	public List<Images> findAllByProductId(Product product);
+	public List<Images> findAllByProduct(Product product);
 	
 	@Query("from Images u where u.review = ?1")
-	public List<Images> findAllByReviewId(Review review);
+	public List<Images> findAllByReview(Review review);
 }
