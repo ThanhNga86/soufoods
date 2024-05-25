@@ -1,0 +1,82 @@
+<title>Quản trị viên - Soufoods</title>
+<!--stand menu-->
+<div class="stand-menu">
+  <div class="logo-soufoods">
+    <a href="/admin/dashboard"><img src="assets/images/logo-soufoods.png" width="120"></a>
+  </div>
+
+  <ul>
+    <a class="menu-section" href="/admin/dashboard"><li><i class="fa-solid fa-gauge"></i> Dashboard</li></a>
+    <a class="menu-section" href="/admin/users"><li><i class="fa-solid fa-users"></i> Người dùng</li></a>
+
+    <li class="menu-mini" data-bs-toggle="collapse" data-bs-target="#menu-category" aria-expanded="false" aria-controls="menu-product">
+      <div><span class="icon"><i class="fa-solid fa-table-list"></i></span>Danh mục</div>
+      <span class="right"><i class="fa-solid fa-angle-right"></i></span>
+    </li>
+    <ul class="collapse show-menuMini" id="menu-category">
+      <a class="menu-section" href="/admin/add-category"><li><i class="fa-solid fa-plus"></i> Thêm danh mục</li></a>
+      <a class="menu-section" href="/admin/categories"><li><i class="fa-solid fa-list"></i> Danh sách</li></a>
+    </ul>
+
+    <li class="menu-mini" data-bs-toggle="collapse" data-bs-target="#menu-product" aria-expanded="false" aria-controls="menu-product">
+      <div><span class="icon"><i class="fa-solid fa-boxes-stacked"></i></span>Kho sản phẩm</div>
+      <span class="right"><i class="fa-solid fa-angle-right"></i></span>
+    </li>
+    <ul class="collapse show-menuMini" id="menu-product">
+      <a class="menu-section" href="/admin/add-product"><li><i class="fa-solid fa-plus"></i> Thêm sản phẩm</li></a>
+      <a class="menu-section" href="/admin/products"><li><i class="fa-solid fa-list"></i> Danh sách</li></a>
+      <a class="menu-section" href="/admin/pick-address"><li><i class="fa-solid fa-location-dot"></i> Địa chỉ lấy hàng</li></a>
+    </ul>
+
+    <li class="menu-mini" data-bs-toggle="collapse" data-bs-target="#menu-voucher" aria-expanded="false" aria-controls="menu-product">
+      <div><span class="icon"><i class="fa-solid fa-ticket"></i></span>Mã giảm giá</div>
+      <span class="right"><i class="fa-solid fa-angle-right"></i></span>
+    </li>
+    <ul class="collapse show-menuMini" id="menu-voucher">
+      <a class="menu-section" href="/admin/add-voucher"><li><i class="fa-solid fa-plus"></i> Thêm mã giảm giá</li></a>
+      <a class="menu-section"  href="/admin/vouchers"><li><i class="fa-solid fa-list"></i> Danh sách</li></a>
+    </ul>
+
+    <li class="menu-mini" data-bs-toggle="collapse" data-bs-target="#menu-order" aria-expanded="false" aria-controls="menu-product">
+      <div><span class="icon"><i class="fa-solid fa-table-list"></i></span>Đơn hàng</div>
+      <span class="right"><i class="fa-solid fa-angle-right"></i></span>
+    </li>
+    <ul class="collapse show-menuMini" id="menu-order">
+      <a class="menu-section" href="/admin/apply-order"><li><i class="fa-solid fa-plus"></i> Duyệt đơn</li></a>
+      <a class="menu-section" href="/admin/orders"><li><i class="fa-solid fa-list"></i> Danh sách</li></a>
+    </ul>
+
+    <a class="menu-section" href="/admin/reviews"><li><i class="fa-solid fa-ranking-star"></i> Đánh giá sản phẩm</li></a>
+    <a class="menu-section" href="/admin/statistics"><li><i class="fa-solid fa-square-poll-vertical"></i> Số liệu thống kê</li></a>
+  </ul>
+</div>
+
+<!--horizontal menu-->
+<div class="horizontal-menu on-off-menu">
+  <div class="left">
+    <i class="fa-solid fa-bars mode-menu"></i>
+    <input type="search" name="search" class="form-control search" id="search" placeholder="Tìm kiếm...">
+    <div class="filter">
+      <i class="fa-solid fa-filter"></i>
+      <div class="filter-table"></div>
+    </div>
+
+    <i class="fa-solid fa-clock-rotate-left" title="Làm mới dữ liệu"></i>
+  </div>
+
+  <div class="right">
+    <div class="btn-group" *ngIf="isAuthenticated()">
+      <div class="user-menu">
+        <i class="fa-solid fa-user"></i><span class="username"></span>
+        <i class="fa-solid fa-chevron-down"></i>
+        <div class="menu-bar"></div>
+      </div>
+
+      <ul class="dropdown-menu dropdown-menu-end dropdown-menu-user" data-popper-placement="bottom-end" style="position: absolute; inset: 0px 0px auto auto; margin: 0px; transform: translate3d(0px, 36px, 0px);">
+        <a class="item-menu" href="/"><li>Quay về trang chủ</li></a>
+        <a class="item-menu" href="/account"><li>Thông tin cá nhân</li></a>
+        <li class="item-menu logout" (click)="logout()">Đăng xuất</li>
+      </ul>
+    </div>
+  </div>
+</div>

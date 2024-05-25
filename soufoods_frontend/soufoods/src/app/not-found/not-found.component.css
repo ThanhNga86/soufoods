@@ -1,0 +1,8 @@
+.error-message {
+  margin-top: 20px;
+}
+
+.error-message a {
+  color: black;
+  font-weight: 500;
+}

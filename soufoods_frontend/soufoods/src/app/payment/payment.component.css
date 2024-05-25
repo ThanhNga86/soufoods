@@ -1,0 +1,254 @@
+@media (max-width: 992px) {
+  #containerOrder .ctnProducts {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  #containerMenu .dropdown-menu-user {
+    display: none;
+  }
+}
+
+@media (min-width: 768px) {
+  #containerOrder {
+    display: flex;
+  }
+
+  #containerOrder .ctnInfo .ctnAddress {
+    display: flex;
+    justify-content: center;
+  }
+
+  #containerOrder .ctnInfo .ctnAddress .formDistricts {
+    margin: 0 10px;
+  }
+}
+
+header {
+  background-color: rgb(255 233 207);
+  margin-bottom: 20px;
+}
+
+header .offcanvas {
+  max-width: 90%;
+}
+
+#containerMenu {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 12px;
+}
+
+#containerMenu .shopping-cart {
+  color: rgb(255, 176, 80);
+  font-size: medium;
+  text-decoration: none;
+}
+
+#containerMenu .shopping-cart > i {
+  font-size: 22px;
+}
+
+#containerMenu .action-user, #containerMenu .action-cart {
+  font-size: 22px;
+  color: rgb(255, 176, 80);
+  cursor: pointer;
+}
+
+#containerMenu .action-user:hover, #containerMenu .action-cart:hover {
+  opacity: 0.8;
+}
+
+#containerMenu .menu-bar {
+  position: absolute;
+  z-index: 100;
+  height: 30px;
+  width: 100%;
+  margin-top: -6px;
+}
+
+#containerMenu .item-menu {
+  text-decoration: none;
+  color: black;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+#containerMenu .item-menu:hover {
+  color: rgb(255, 190, 111);
+}
+
+/*Form đăng nhập*/
+#containerMenu .formLogin {
+  width: 100%;
+  font-size: medium;
+}
+
+#containerMenu .formLogin form label {
+  margin-bottom: 1px;
+  margin-top: 10px;
+}
+
+#containerMenu .formLogin form .form-control:focus {
+  box-shadow: 0 0 0 2px rgb(255, 222, 170);
+  border-color: rgb(255, 222, 170);
+}
+
+#containerMenu .formLogin .forgot-pw {
+  text-decoration: none;
+  color: black;
+}
+
+#containerMenu .formLogin .forgot-pw:hover {
+  color: rgb(255, 141, 2);
+}
+
+#containerMenu .formLogin .btnSubmit {
+  border: solid 1px white;
+  padding: 6px 60px;
+  border-radius: 15px;
+  font-weight: 400;
+  background-color: rgb(255, 141, 2);
+  color: white;
+  white-space: nowrap;
+}
+
+#containerMenu .formLogin .btnSubmit:hover {
+  opacity: 0.8;
+}
+
+#containerMenu .formLogin .other-login {
+  margin: 20px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#containerMenu .formLogin .other-login > hr {
+  width: 100%;
+  margin: 0 3px;
+}
+
+#containerMenu .formLogin .loginOther {
+  text-decoration: none;
+  margin-top: 6px;
+  padding: 8px;
+  width: 100%;
+  border-radius: 6px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: solid 1px gray;
+  color: black;
+}
+
+#containerMenu .formLogin .loginOther > img {
+  margin-right: 5px;
+}
+
+#containerMenu .formLogin .loginOther:hover {
+  color: rgb(255, 141, 2);
+}
+
+#containerMenu .formLogin .register {
+  margin-top: 20px;
+  text-align: center;
+}
+
+#containerMenu .formLogin .register > a {
+  text-decoration: none;
+  color: rgb(255, 141, 2);
+}
+
+#containerMenu .formLogin .register > a:hover {
+  opacity: 0.8;
+}
+
+.message {
+  color: red;
+}
+
+.loading-data {
+  text-align: center;
+}
+
+#containerOrder {
+  margin-bottom: 40px;
+}
+
+#containerOrder .ctnInfo .title-info,
+.ctnInfo .title-ship,
+.ctnInfo .title-payment {
+  font-size: large;
+  font-weight: 500;
+}
+
+#containerOrder .ctnInfo label {
+  font-size: medium;
+  margin-bottom: 2px;
+  margin-top: 5px;
+}
+
+#containerOrder .ctnInfo .form-control:focus {
+  box-shadow: 0 0 0 2px rgb(255, 222, 170);
+  border-color: rgb(255, 222, 170);
+}
+
+#containerOrder .ctnInfo .form-select:focus {
+  box-shadow: 0 0 0 2px rgb(255, 222, 170);
+  border-color: rgb(255, 222, 170);
+}
+
+#containerOrder .ctnInfo .form-check-input:focus {
+  box-shadow: none;
+  border-color: none;
+}
+
+#containerOrder .ctnInfo .ctnFormGorup {
+  display: flex;
+  width: 100%;
+}
+
+#containerOrder .ctnInfo .ctnShip {
+  margin-top: 20px;
+}
+
+#containerOrder .ctnInfo .ctnShip .ctnMessageShip {
+  margin-top: 10px;
+  padding: 20px;
+  border-radius: 5px;
+  border: solid 1px lightgray;
+  color: grey;
+  text-align: center;
+}
+
+#containerOrder .ctnInfo .ctnPayment {
+  margin-top: 20px;
+}
+
+#containerOrder .ctnInfo .ctnPayment label {
+  padding-left: 5px;
+  margin: 0;
+  cursor: pointer;
+}
+
+#containerOrder .ctnInfo .ctnPayment .inpPayment {
+  cursor: pointer;
+}
+
+#containerOrder .ctnInfo .btnPayment {
+  margin-top: 20px;
+  padding: 10px 0;
+  width: 100%;
+  border-radius: 10px;
+  color: white;
+  font-weight: 500;
+  background-color: rgb(255, 176, 80);
+  border: none;
+}
+
+#containerOrder .ctnInfo .btnPayment:hover {
+  opacity: 0.8;
+}

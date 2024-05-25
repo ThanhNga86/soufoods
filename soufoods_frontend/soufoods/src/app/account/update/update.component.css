@@ -1,0 +1,102 @@
+@media (max-width: 576px) {
+  .formUpdate form {
+    max-width: 90%;
+  }
+}
+
+.account {
+  padding: 20px 0;
+}
+
+.account table tr td {
+  padding: 10px;
+  border: solid 1px lightgray;
+  border-collapse: collapse;
+}
+
+.account table .field {
+  white-space: nowrap;
+  font-weight: 500;
+  width: 120px;
+}
+
+.account table .action {
+  width: 50px;
+  text-align: center;
+}
+
+.account table .action .edit{
+  padding: 4px 8px;
+  border-radius: 6px;
+  background-color: deepskyblue;
+  color: white;
+  cursor: pointer;
+}
+
+.account table .action .edit:hover{
+  opacity: 0.8;
+}
+
+.account table .action .edit-password{
+  padding: 4px 8px;
+  border-radius: 6px;
+  background-color: deepskyblue;
+  color: white;
+  cursor: pointer;
+}
+
+.title {
+  text-align: center;
+  width: 100%;
+  padding: 10px 0;
+  font-size: 18px;
+  font-weight: 480;
+  background: linear-gradient(90deg, rgba(255,211,153,1) 30%, rgba(192,255,177,1) 100%);
+  color: orange;
+}
+
+/* Modal */
+.table > :not(caption) > * > * {
+  background-color: transparent;
+}
+
+.modal-body {
+  text-align: left;
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal-footer .btnCancel {
+  margin: 0 8px;
+}
+
+.change-message, .changePw-message {
+  color: green;
+  font-size: medium;
+}
+
+.updateForm label {
+  margin-top: 8px;
+  margin-bottom: 3px;
+}
+
+.form-control:focus {
+  box-shadow: 0 0 0 2px rgb(255, 222, 170);
+  border-color: rgb(255, 222, 170);
+}
+
+.form-select:focus {
+  box-shadow: 0 0 0 2px rgb(255, 222, 170);
+  border-color: rgb(255, 222, 170);
+}
+
+.message {
+  margin-top: 3px;
+  color: red;
+  font-size: medium;
+}
+

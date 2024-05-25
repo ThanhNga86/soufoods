@@ -1,0 +1,70 @@
+@media (max-width: 992px) {
+  #info {
+    padding-bottom: 56px;
+  }
+}
+
+#security-info {
+  margin-top: 60px;
+  background-color: rgb(254, 246, 243);
+  padding: 20px 0;
+}
+
+#security-info .item {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+#security-info .item .icon {
+  color: white;
+  padding: 25px;
+  border-radius: 50%;
+  color: lightsalmon;
+  border: solid 1px lightsalmon;
+  font-size: 25px;
+}
+
+#security-info .item:hover .icon {
+  color: rgb(86, 235, 86);
+  border: solid 1px rgb(86, 235, 86);
+}
+
+#security-info .item .title {
+  margin-top: 10px;
+  font-size: 15px;
+  font-weight: 500;
+}
+
+#security-info .item .describe {
+  color: grey;
+  font-size: 14px;
+}
+
+#info {
+  background-color: rgb(246, 250, 241);
+}
+
+#info .logo {
+  padding: 10px 0;
+}
+
+#info .contact {
+  color: grey;
+  margin-top: 5px;
+}
+
+#info .contact i {
+  margin-right: 5px;
+}
+
+#info .copyright {
+  color: grey;
+  margin: 5px 0;
+  font-size: medium;
+}
+
+#info .copyright span {
+  color: orange;
+}
+
+
