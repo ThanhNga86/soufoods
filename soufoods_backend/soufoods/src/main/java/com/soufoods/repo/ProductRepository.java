@@ -21,7 +21,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 	List<Product> findAllByCategory(CategoryDetail categoryD);
 
 	@Query("select distinct u from Product u LEFT JOIN FETCH u.listProductDetails pd where "
-			+ "(:id is null or u.id = :id) " + "and (:name is null or u.name like %:name%) "
+			+ "(:id is null or u.id = :id) and (:name is null or u.name like %:name%) "
 			+ "and (:quantity is null or (:quantity = 0 and pd.quantity = 0) or (:quantity = 1 and pd.quantity > 0)) "
 			+ "and (:discount is null or (:discount = 0 and pd.discount = 0) or (:discount = 1 and pd.discount > 0)) "
 			+ "and (:active is null or u.active = :active) " + "and (:activePd is null or pd.active = :activePd) "
@@ -91,4 +91,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 	Page<Product> filterProductBySearch(@Param("search") String search, @Param("quantity") Integer quantity,
 			@Param("discount") Double discount, @Param("minPrice") Double minPrice, @Param("maxPrice") Double maxPrice,
 			Pageable page);
+	
+	@Query("select count(u) from Product u where u.active = false")
+	Long staticsByStopSelling();
 }

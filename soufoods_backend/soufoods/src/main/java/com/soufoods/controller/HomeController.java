@@ -15,30 +15,30 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class HomeController {
 	private final HomeService homeService;
-	
+
 	@GetMapping("/categoryDetails")
 	public ResponseEntity<?> categoryDetails() {
 		return ResponseEntity.ok(homeService.findAllCategoryDetail());
 	}
-	
+
 	@GetMapping("/promotionProducts")
 	public ResponseEntity<?> promotionProducts() {
 		return ResponseEntity.ok(homeService.findAllPromotionProduct());
 	}
-	
+
 	@GetMapping("/findAllProduct/{name}")
 	public ResponseEntity<?> findAllProductByCategory(@PathVariable("name") String name) {
 		return ResponseEntity.ok(homeService.findAllProductByCategory(name));
 	}
-	
+
 	@GetMapping("/sellingProducts")
 	public ResponseEntity<?> sellingProducts() {
 		return ResponseEntity.ok(homeService.findALlSellingProducts());
 	}
-	
+
 	@GetMapping("/findAllByProduct/{id}")
 	public ResponseEntity<?> promotionProducts(@PathVariable("id") Product product) {
 		return ResponseEntity.ok(homeService.findAllByProduct(product));
 	}
-	
+
 }

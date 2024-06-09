@@ -56,6 +56,7 @@ public class MyConfig {
 	public CorsFilter corsFilter() {
 		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 		CorsConfiguration config = new CorsConfiguration();
+		config.addAllowedOrigin("http://soufoods.online.s3-website-ap-southeast-1.amazonaws.com/");
 		config.addAllowedOrigin(appUrl);
 		config.addAllowedMethod("*");
 		config.addAllowedHeader("*");

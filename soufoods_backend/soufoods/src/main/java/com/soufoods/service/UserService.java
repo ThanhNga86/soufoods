@@ -57,11 +57,37 @@ public class UserService {
 		return map;
 	}
 
-	// login
-	public AuthenticationResponse authentication(AuthenticationRequest request) {
-		authenticationManager
-				.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
-		var user = userRepository.findByEmail(request.getEmail()).orElseThrow();
+	// login with local
+	public AuthenticationResponse login(AuthenticationRequest request) {
+		authenticationManager.authenticate(
+				new UsernamePasswordAuthenticationToken(request.getEmail().trim(), request.getPassword()));
+		var user = userRepository.findByEmail(request.getEmail().trim()).orElseThrow();
+		var token = jwtService.generateToken(user);
+		var refreshToken = jwtService.generateRefreshToken(user);
+		return AuthenticationResponse.builder().token(token).refreshToken(refreshToken).build();
+	}
+
+	// login with OAhtu2
+	public AuthenticationResponse loginWithOAhtu2(AuthenticationRequest request) {
+		User user = null;
+		Optional<User> userId = userRepository.findByEmail(request.getEmail().trim());
+		if (!userId.isPresent()) {
+			user = new User();
+			if (request.getProvider().equals("GOOGLE")) {
+				user.setAccount(Account.Google);
+			} else if (request.getProvider().equals("FACEBOOK")) {
+				user.setAccount(Account.Facebook);
+			}
+			user.setEmail(request.getEmail());
+			user.setFirstName(request.getFirstName());
+			user.setLastName(request.getLastName());
+			user.setCreateDate(new Date());
+			user.setRole(Role.ROLE_USER);
+			user.setActive(true);
+			user = userRepository.save(user);
+		} else {
+			user = userId.get();
+		}
 		var token = jwtService.generateToken(user);
 		var refreshToken = jwtService.generateRefreshToken(user);
 		return AuthenticationResponse.builder().token(token).refreshToken(refreshToken).build();
@@ -90,7 +116,7 @@ public class UserService {
 	public Map<String, String> register(User user) {
 		boolean check = true;
 		Map<String, String> map = new HashMap<>();
-		Optional<User> checkUser = userRepository.findByEmail(user.getEmail());
+		Optional<User> checkUser = userRepository.findByEmail(user.getEmail().trim());
 
 		if (user.getEmail() == null || user.getEmail().isEmpty()) {
 			map.put("email", "Vui lòng nhập email");
@@ -125,6 +151,7 @@ public class UserService {
 
 		if (check) {
 			map.put("status", "200");
+			user.setEmail(user.getEmail().trim());
 			user.setActive(true);
 			user.setPassword(passwordEncoder.encode(user.getPassword()));
 			user.setRole(Role.ROLE_USER);
@@ -144,35 +171,35 @@ public class UserService {
 		}
 		return map;
 	}
-	
+
 	// update pick address
 	public Map<String, String> updatePickAddress(String token, String address) {
 		Map<String, String> map = new HashMap<>();
 		boolean check = true;
 		Optional<User> user = null;
-		
-		if(token == null || token.isEmpty()) {
+
+		if (token == null || token.isEmpty()) {
 			check = false;
 		} else {
 			final String username = jwtService.extractUsername(token);
 			user = userRepository.findByEmail(username);
-			if(!user.isPresent()) {
+			if (!user.isPresent()) {
 				check = false;
 			}
 		}
-		
-		if(address == null || address.isEmpty()) {
+
+		if (address == null || address.isEmpty()) {
 			check = false;
 		}
-		
-		if(check) {
+
+		if (check) {
 			map.put("status", "200");
 			user.get().setAddress(address);
 			userRepository.saveAndFlush(user.get());
 		} else {
 			map.put("status", "401");
 		}
-		
+
 		return map;
 	}
 
@@ -280,17 +307,17 @@ public class UserService {
 		Map<String, Object> map = new HashMap<>();
 		boolean check = true;
 		Optional<User> checkUser = userRepository.findByEmail(request.getEmail());
-		
-		if(request.getEmail() == null || request.getEmail().isEmpty()) {
+
+		if (request.getEmail() == null || request.getEmail().isEmpty()) {
 			map.put("email", "Vui lòng nhập email");
 			check = false;
 		} else {
-			if(!checkUser.isPresent()) {
+			if (!checkUser.isPresent()) {
 				map.put("email", "Email không hợp lệ hoặc không tìm thấy email này");
 				check = false;
 			}
 		}
-		
+
 		if (check) {
 			try {
 				ExecutorService executor = Executors.newSingleThreadExecutor();
@@ -313,12 +340,13 @@ public class UserService {
 	// forgot password confirm
 	public Map<String, String> forgotPasswrodConfirm(ForgotPasswordRequest request) {
 		Map<String, String> map = new HashMap<>();
-		Optional<ForgotPassword> forgotPw = forgotPasswordRepository.findByIdAndValidCode(request.getId(), request.getValidCode());
-		if(forgotPw.isPresent()) {
-			if(!forgotPw.get().getExpiration().before(new Date())) {
+		Optional<ForgotPassword> forgotPw = forgotPasswordRepository.findByIdAndValidCode(request.getId(),
+				request.getValidCode());
+		if (forgotPw.isPresent()) {
+			if (!forgotPw.get().getExpiration().before(new Date())) {
 				map.put("status", "200");
 				map.put("email", forgotPw.get().getUser().getEmail());
-				map.put("expiration", forgotPw.get().getExpiration()+"");
+				map.put("expiration", forgotPw.get().getExpiration() + "");
 			} else {
 				map.put("status", "401");
 				map.put("error", "Thời hạn đặt lại mật khẩu đã hết. Vui lòng thử lại !");
@@ -329,42 +357,43 @@ public class UserService {
 		}
 		return map;
 	}
-	
+
 	// reset password
 	public Map<String, String> resetPassword(ForgotPasswordRequest request) {
 		Map<String, String> map = new HashMap<>();
 		boolean check = true;
-		Optional<ForgotPassword> forgotPw = forgotPasswordRepository.findByIdAndValidCode(request.getId(), request.getValidCode());
-		if(!forgotPw.isPresent()) {
+		Optional<ForgotPassword> forgotPw = forgotPasswordRepository.findByIdAndValidCode(request.getId(),
+				request.getValidCode());
+		if (!forgotPw.isPresent()) {
 			map.put("error", "Lỗi đặt lại mật khẩu. Vui lòng thử lại !");
 			check = false;
 		} else {
-			if(forgotPw.get().getExpiration().before(new Date())) {
+			if (forgotPw.get().getExpiration().before(new Date())) {
 				map.put("error", "Thời hạn đặt lại mật khẩu đã hết. Vui lòng thử lại !");
 				check = false;
 			}
 		}
-		
-		if(request.getPassword() == null || request.getPassword().isEmpty()) {
+
+		if (request.getPassword() == null || request.getPassword().isEmpty()) {
 			map.put("password", "Vui lòng nhập mật khẩu");
 			check = false;
 		}
-		
-		if(request.getPasswordCf() == null || request.getPasswordCf().isEmpty()) {
+
+		if (request.getPasswordCf() == null || request.getPasswordCf().isEmpty()) {
 			map.put("passwordCf", "Vui lòng nhập xác nhận mật khẩu");
 			check = false;
 		} else {
-			if(!request.getPassword().equals(request.getPasswordCf())) {
+			if (!request.getPassword().equals(request.getPasswordCf())) {
 				map.put("passwordCf", "Mật khẩu chưa khớp");
 				check = false;
 			}
 		}
-		
-		if(check) {
+
+		if (check) {
 			Optional<User> user = userRepository.findByEmail(forgotPw.get().getUser().getEmail());
 			user.get().setPassword(passwordEncoder.encode(request.getPasswordCf()));
 			userRepository.saveAndFlush(user.get());
-			
+
 			forgotPasswordRepository.delete(forgotPw.get());
 			map.put("status", "200");
 		} else {
@@ -372,5 +401,5 @@ public class UserService {
 		}
 		return map;
 	}
-	
+
 }

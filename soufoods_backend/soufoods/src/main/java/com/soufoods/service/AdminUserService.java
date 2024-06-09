@@ -9,6 +9,7 @@ import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -57,7 +58,7 @@ public class AdminUserService {
 
 	public AdminUserResponse findAll(Optional<Integer> pageNumber, Optional<Integer> sizePage1) {
 		int sizePage = sizePage1.orElse(10);
-		Pageable page = PageRequest.of(pageNumber.orElse(1) - 1, sizePage);
+		Pageable page = PageRequest.of(pageNumber.orElse(1) - 1, sizePage, Sort.by("id").reverse());
 		Page<User> users = userRepository.findAll(page);
 		long total = users.getTotalElements();
 		int totalPage = (int) (total / sizePage);

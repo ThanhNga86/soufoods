@@ -26,4 +26,10 @@ public interface UserRepository extends JpaRepository<User, Long> {
 			+ "and (:active is null or u.active = :active) "
 			+ "order by u.id desc")
 	Page<User> filterUser(@Param("search") String search, @Param("active") Boolean active, Pageable page);
+	
+	@Query("select count(u) from User u where u.active = true")
+	Long staticsByActived();
+	
+	@Query("select count(u) from User u where u.active = false")
+	Long staticsByUnActived();
 }

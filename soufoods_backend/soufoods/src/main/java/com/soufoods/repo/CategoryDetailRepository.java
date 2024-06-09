@@ -16,4 +16,10 @@ public interface CategoryDetailRepository extends JpaRepository<CategoryDetail, 
 	@Query("select distinct u from CategoryDetail u LEFT JOIN FETCH u.category c where "
 			+ "u.active = true and c.active = true")
 	List<CategoryDetail> findAllCategoryDetail();
+	
+	@Query("select count(u) from CategoryDetail u where u.active = true")
+	Long staticsByActived();
+	
+	@Query("select count(u) from CategoryDetail u where u.active = false")
+	Long staticsByUnActived();
 }

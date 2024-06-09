@@ -32,13 +32,16 @@ public class Order implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String email;
-	private String firstName;
 	private String lastName;
+	private String firstName;
 	private String address;
 	private String phone;
 	@Column(columnDefinition = "TEXT")
 	private String note;
-	private boolean freeShip;
+	private boolean announced;
+	private Integer shipFee;
+	private String payment;
+	private Date paymentExpired;
 	private Date createDate = new Date();
 	private String status;
 	@ManyToOne
@@ -47,9 +50,6 @@ public class Order implements Serializable {
 	@OneToOne(cascade = CascadeType.REMOVE)
 	@JoinColumn(name = "voucherId")
 	private Voucher voucher;
-	@JsonIgnore
-	@OneToOne(mappedBy = "order", cascade = CascadeType.REMOVE)
-	private Payment payments;
 	@JsonIgnore
 	@OneToMany(mappedBy = "order", cascade = CascadeType.REMOVE)
 	private List<OrderDetail> listOrderDetail;

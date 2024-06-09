@@ -12,7 +12,7 @@ public interface ProductDetailRepository extends JpaRepository<ProductDetail, Lo
 
 	@Query("from ProductDetail u where u.product = ?1 order by u.size")
 	List<ProductDetail> findAllByProduct(Product product);
-
+	
 	@Query("select max(u.price) from ProductDetail u where "
 			+ "u.discount > 0 and u.active = true and u.product.active = true and u.product.categoryDetail.active = true and u.product.categoryDetail.category.active = true")
 	Double maxPriceBySaleOff(Long id);
@@ -28,4 +28,13 @@ public interface ProductDetailRepository extends JpaRepository<ProductDetail, Lo
 	@Query("select max(u.price) from ProductDetail u where "
 			+ "u.product.name like %?1% and u.active = true and u.product.active = true and u.product.categoryDetail.active = true and u.product.categoryDetail.category.active = true")
 	Double maxPriceBySearch(String search);
+	
+	@Query("select count(u) from ProductDetail u where u.quantity > 0 and u.active = true")
+	Long staticsByOnSale();
+	
+	@Query("select count(u) from ProductDetail u where u.active = false")
+	Long staticsByStopSelling();
+	
+	@Query("select count(u) from ProductDetail u where u.quantity = 0")
+	Long staticsByOutStock();
 }

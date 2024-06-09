@@ -28,4 +28,7 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
 	@Query("from Review u where "
 			+ "u.product.id = ?1 and u.active = true order by u.createDate desc")
 	List<Review> findAllByProduct(Long productId);
+	
+	@Query("select count(u) from Review u where (:rate = true and u.rate >= 4) or (:rate = false and u.rate < 4)")
+	Long staticsByRate(boolean rate);
 }

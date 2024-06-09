@@ -27,6 +27,7 @@ public class SecurityConfig {
 			.requestMatchers(HttpMethod.PUT, "/api/user").authenticated()
 			.requestMatchers("/api/user/change-password").authenticated()
 			.requestMatchers(HttpMethod.GET, "/api/voucher").authenticated()
+			.requestMatchers("/api/payment").authenticated()
 			.requestMatchers("/api/admin/**").hasAuthority("ROLE_ADMIN")
 			.anyRequest().permitAll()
 			).sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)

@@ -24,8 +24,13 @@ public class AuthenticationController {
 	private final UserService userService;
 	
 	@PostMapping("")
-	public ResponseEntity<AuthenticationResponse> authentication(@RequestBody AuthenticationRequest request){
-		return ResponseEntity.ok(userService.authentication(request));
+	public ResponseEntity<AuthenticationResponse> login(@RequestBody AuthenticationRequest request){
+		return ResponseEntity.ok(userService.login(request));
+	}
+	
+	@PostMapping("/oauth2")
+	public ResponseEntity<AuthenticationResponse> loginWithOAuth2(@RequestBody AuthenticationRequest request){
+		return ResponseEntity.ok(userService.loginWithOAhtu2(request));
 	}
 	
 	@PostMapping("/refresh")

@@ -35,4 +35,10 @@ public interface VoucherRepository extends JpaRepository<Voucher, Long>{
 			+ "u.expiration <= current_date and u.active = false and messageType = 'local' "
 			+ "order by u.expiration")
 	List<Voucher> findAllByExpiration();
+	
+	@Query("select count(u) from Voucher u where u.active = true")
+	Long staticsByActived();
+	
+	@Query("select count(u) from Voucher u where u.active = false")
+	Long staticsByUnActived();
 }

@@ -1,5 +1,7 @@
 package com.soufoods.model;
 
+import java.util.Date;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -9,8 +11,10 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class VoucherRequest {
-	private String token;
-	private String discountCode;
-	private Double provisional;
+public class FilterOrderRequest {
+	private Long id;
+	private String search;
+	private Date orderDate;
+	private String status;
+	private Integer pageNumber;
 }

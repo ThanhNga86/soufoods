@@ -17,4 +17,10 @@ public interface CategoryRepository extends JpaRepository<Categories, Long> {
 			+ "order by u.id desc")
 	Page<Categories> filterCategory(@Param("search") String search,
 			 @Param("active") Boolean active, @Param("activeCd") Boolean activeCd, Pageable page);
+	
+	@Query("select count(u) from Categories u where u.active = true")
+	Long staticsByActived();
+	
+	@Query("select count(u) from Categories u where u.active = false")
+	Long staticsByUnActived();
 }
