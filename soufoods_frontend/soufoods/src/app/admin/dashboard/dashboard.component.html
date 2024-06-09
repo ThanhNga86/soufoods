@@ -1,0 +1,125 @@
+<app-menu></app-menu>
+<div id="containerDashboard" class="on-off-menu">
+  <div class="dashboard">
+    <div class="row">
+      <div class="col-xl-4 col-lg-6 col-md-6 col-sm-6 mb-4">
+        <div class="users">
+          <div class="heading"><i class="fa-solid fa-users"></i> KHÁCH HÀNG</div>
+          <div class="statistics" *ngIf="!dashboard.user">___</div>
+          <div class="statistics" *ngIf="dashboard.user">
+            <div class="row mx-0 px-0">
+              <div class="col-6">Hoạt động: {{(dashboard.user.actived).toLocaleString('vi-VN')}}</div>
+              <div class="col-6">Bị khóa: {{(dashboard.user.unActived).toLocaleString('vi-VN')}} </div>
+            </div>
+          </div>
+          <div class="action">
+            <div></div>
+            <a class="see" href="/admin/users"><i class="fa-solid fa-eye"></i> Xem</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-xl-4 col-lg-6 col-md-6 col-sm-6 mb-4">
+        <div class="categories">
+          <div class="heading"><i class="fa-solid fa-table-list"></i> DANH MỤC</div>
+          <div class="statistics" *ngIf="!dashboard.category">___</div>
+          <div class="statistics" *ngIf="dashboard.category">
+            <div class="row mx-0 px-0">
+              <div class="col-6">Hoạt động: {{(dashboard.category.actived).toLocaleString('vi-VN')}}</div>
+              <div class="col-6">Bị khóa: {{(dashboard.category.unActived).toLocaleString('vi-VN')}} </div>
+            </div>
+          </div>
+          <div class="action">
+            <a class="add" href="/admin/add-category"><i class="fa-solid fa-plus"></i> Thêm</a>
+            <a class="see" href="/admin/categories"><i class="fa-solid fa-eye"></i> Xem</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-xl-4 col-lg-6 col-md-6 col-sm-6 mb-4">
+        <div class="products">
+          <div class="heading"><i class="fa-solid fa-boxes-stacked"></i> SẢN PHẨM</div>
+          <div class="statistics" *ngIf="!dashboard.product">___</div>
+          <div class="statistics" *ngIf="dashboard.product">
+            <div class="row mx-0 px-0">
+              <div class="col-6">Đã bán: {{(dashboard.product.sold).toLocaleString('vi-VN')}}</div>
+              <div class="col-6">Đang bán: {{(dashboard.product.onSale).toLocaleString('vi-VN')}} </div>
+              <div class="col-6">Ngừng bán: {{(dashboard.product.stopSelling).toLocaleString('vi-VN')}}</div>
+              <div class="col-6">Hết hàng: {{(dashboard.product.outStock).toLocaleString('vi-VN')}}</div>
+            </div>
+          </div>
+          <div class="action">
+            <a class="add" href="/admin/add-product"><i class="fa-solid fa-plus"></i> Thêm</a>
+            <a class="see" href="/admin/products"><i class="fa-solid fa-eye"></i> Xem</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-xl-4 col-lg-6 col-md-6 col-sm-6 mb-4">
+        <div class="vouchers">
+          <div class="heading"><i class="fa-solid fa-ticket"></i> MÃ GIẢM GIÁ</div>
+          <div class="statistics" *ngIf="!dashboard.voucher">___</div>
+          <div class="statistics" *ngIf="dashboard.voucher">
+            <div class="row mx-0 px-0">
+              <div class="col-6">Đã sử dụng: {{(dashboard.voucher.actived).toLocaleString('vi-VN')}}</div>
+              <div class="col-6">Chưa sử dụng: {{(dashboard.voucher.unActived).toLocaleString('vi-VN')}}</div>
+            </div>
+          </div>
+          <div class="action">
+            <a class="add" href="/admin/add-voucher"><i class="fa-solid fa-plus"></i> Thêm</a>
+            <a class="see" href="/admin/vouchers"><i class="fa-solid fa-eye"></i> Xem</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-xl-4 col-lg-6 col-md-6 col-sm-6 mb-4">
+        <div class="orders">
+          <div class="heading"><i class="fa-solid fa-box"></i> ĐƠN HÀNG</div>
+          <div class="statistics" *ngIf="!dashboard.order">___</div>
+          <div class="statistics" *ngIf="dashboard.order">
+            <div class="row mx-0 px-0">
+              <div class="col-6">Chờ xử lý: {{(dashboard.order.wait).toLocaleString('vi-VN')}}</div>
+              <div class="col-6">Đã xử lý: {{(dashboard.order.processed).toLocaleString('vi-VN')}}</div>
+              <div class="col-6">Đang giao: {{(dashboard.order.delivering).toLocaleString('vi-VN')}}</div>
+              <div class="col-6">Đã giao: {{(dashboard.order.delivered).toLocaleString('vi-VN')}}</div>
+            </div>
+          </div>
+          <div class="action">
+            <a></a>
+            <a class="see" href="/admin/orders"><i class="fa-solid fa-eye"></i> Xem</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-xl-4 col-lg-6 col-md-6 col-sm-6 mb-4">
+        <div class="reviews">
+          <div class="heading"><i class="fa-solid fa-ranking-star"></i> ĐÁNH GIÁ</div>
+          <div class="statistics" *ngIf="!dashboard.review">___</div>
+          <div class="statistics" *ngIf="dashboard.review">
+            <div class="row mx-0 px-0">
+              <div class="col-6">Trên 4 <i class="fa-solid fa-star" style="color: rgb(248, 196, 74);"></i>: {{(dashboard.review.out4stars).toLocaleString('vi-VN')}}</div>
+              <div class="col-6">Dưới 4 <i class="fa-solid fa-star" style="color: rgb(248, 196, 74);"></i>: {{(dashboard.review.under4stars).toLocaleString('vi-VN')}}</div>
+            </div>
+          </div>
+          <div class="action">
+            <a></a>
+            <a class="see" href="/admin/reviews"><i class="fa-solid fa-eye"></i> Xem</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-xl-4 col-lg-6 col-md-6 col-sm-6 mb-4">
+        <div class="pick-address">
+          <div class="heading"><i class="fa-solid fa-location-dot"></i> ĐỊA CHỈ LẤY HÀNG</div>
+          <div class="statistics" *ngIf="account.address == null">Vui lòng cập nhật để khách hàng có thể đặt hàng !</div>
+          <div class="statistics" *ngIf="account != null">
+            {{account.address}}
+          </div>
+          <div class="action">
+            <a></a>
+            <a class="see" href="/admin/pick-address"><i class="fa-solid fa-plus"></i> Cập nhật</a>
+          </div>
+        </div>
+      </div>
+  </div>
+</div>

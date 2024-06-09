@@ -1,0 +1,120 @@
+<app-menu></app-menu>
+<div id="containerCategory" class="on-off-menu">
+  <div class="loading text-center"><span class="loader"></span></div>
+  <div class="table-categories table-responsive">
+    <table class="table table-bordered mt-3 text-center">
+      <tr>
+        <th>Mã số</th>
+        <th>Tên danh mục</th>
+        <th>Hình ảnh </th>
+        <th>Trạng thái</th>
+        <th></th>
+      </tr>
+
+      <tr *ngFor="let category of categories; let i = index" class="tr-categoryupdateForm">
+        <td>{{category.id}}</td>
+        <td>{{category.name}}</td>
+        <td><img [src]="category.imageUrl" width="80" height="80"></td>
+        <td>
+          <span class="actived" *ngIf="category.active">Hoạt động</span>
+          <span class="unActive" *ngIf="!category.active">Bị khóa</span>
+        </td>
+        <td class="action">
+          <span class="see-detail" [id]="category.id"><i class="fa-solid fa-eye" flag="true"></i> Xem</span>
+          <span class="edit" [id]="category.id" data-bs-toggle="modal" [attr.data-bs-target]="'#editForm' + category.id"><i class="fa-solid fa-pen"></i> Sửa</span>
+          <!-- Modal -->
+          <div class="modal fade" id="editForm{{category.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h1 class="modal-title fs-5" id="exampleModalLabel">Cập nhật danh mục</h1>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="updateForm">
+                  <div class="modal-body">
+                    <div class="form-group">
+                      <label>Mã số</label>
+                      <input type="text" disabled [value]="category.id" class="form-control inpId">
+                    </div>
+
+                    <div class="form-group">
+                      <label>Tên</label>
+                      <input type="text" [value]="category.name" name="name" class="form-control inpForm inpName">
+                      <div class="message">{{message.name}}</div>
+                    </div>
+
+                    <div class="form-group">
+                      <label>Ảnh danh mục</label>
+                      <input type="file" class="fileImage" name="image" style="display: none;">
+                      <div class="ctnImage">
+                        <i class="fa-solid fa-x removeImage"></i>
+                        <img class="uploadImage" [src]="category.imageUrl" width="100%" height="100%">
+                      </div>
+                      <div class="message">{{message.image}}</div>
+                    </div>
+
+                    <div class="form-gorup">
+                      <label>Nhiều loại của danh mục</label>
+                      <div class="ctnTypes"></div>
+                      <i class="fa-solid fa-plus addFormType"></i>
+                    </div>
+
+                    <div class="form-group">
+                      <label>Trạng thái</label>
+                      <select *ngIf="category.active" class="form-select inpActive">
+                        <option value="true">Hoạt động</option>
+                        <option value="false">Khóa</option>
+                      </select>
+                      <select *ngIf="!category.active" class="form-select inpActive">
+                        <option value="true">Hoạt động</option>
+                        <option value="false" selected>Khóa</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="modal-footer">
+                    <div class="change-message"></div>
+                    <div class="modal-action">
+                      <button type="button" class="btn btn-success btnReset" [id]="category.id">Khôi phục</button>
+                      <button type="button" class="btn btn-secondary btnCancel" data-bs-dismiss="modal">Hủy</button>
+                      <button type="button" class="btn btn-primary btnSave">Lưu thay đổi</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <span class="remove" id="{{category.id}}"><i class="fa-regular fa-trash-can"></i> Xóa</span>
+        </td>
+      </tr>
+    </table>
+    <div class="total">Tổng danh mục sản phẩm: {{total}}</div>
+
+    <ul id="paging" *ngIf="total > 0 && totalPage.length > 1">
+      <span class="page" *ngIf="pageNumber > 1" (click)="setPageNumber(pageNumber - 1)"><li>Trước đó</li></span>
+      <ng-container *ngFor="let i of totalPage">
+        <ng-container *ngIf="i <= 5 && pageNumber <= 2">
+          <ng-container *ngIf="i == pageNumber">
+            <span class="page" (click)="setPageNumber(i)"><li style="background-color: rgb(253, 142, 105);">{{i}}</li></span>
+          </ng-container>
+          <ng-container *ngIf="i != pageNumber">
+            <span class="page" (click)="setPageNumber(i)"><li>{{i}}</li></span>
+          </ng-container>
+        </ng-container>
+
+        <ng-container *ngIf="pageNumber > 2">
+          <ng-container *ngIf="i >= pageNumber-2 && i <= pageNumber+2">
+            <ng-container *ngIf="i==pageNumber">
+              <span class="page" (click)="setPageNumber(i)"><li style="background-color: rgb(253, 142, 105);">{{i}}</li></span>
+            </ng-container>
+            <ng-container *ngIf="i!=pageNumber">
+              <span class="page" (click)="setPageNumber(i)"><li>{{i}}</li></span>
+            </ng-container>
+          </ng-container>
+        </ng-container>
+
+      </ng-container>
+      <span class="page" *ngIf="pageNumber < totalPage.length" (click)="setPageNumber(pageNumber + 1)"><li>Kế tiếp</li></span>
+    </ul>
+  </div>
+</div>

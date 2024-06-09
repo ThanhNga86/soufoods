@@ -1,0 +1,91 @@
+#containerVoucher .formAdd {
+	padding: 10px;
+}
+
+#containerVoucher .formAdd label {
+	font-size: large;
+	margin-bottom: 1px;
+  margin-top: 8px;
+}
+
+#containerVoucher .formAdd .form-control:focus {
+	box-shadow: 0 0 0 2px rgb(255, 222, 170);
+  border-color: rgb(255, 222, 170);
+}
+
+#containerVoucher .formAdd .form-select:focus {
+	box-shadow: 0 0 0 2px rgb(255, 222, 170);
+  border-color: rgb(255, 222, 170);
+}
+
+#containerVoucher .formAdd .inpDate {
+  width: 200px;
+}
+
+#containerVoucher .formAdd .inpFreeShip {
+  padding: 10px 25px;
+}
+
+#containerVoucher .formAdd .inpMessageType {
+  padding: 10px 25px;
+}
+
+#containerVoucher .formAdd .ctnPriceMin {
+  display: flex;
+  align-items: center;
+}
+
+#containerVoucher .formAdd .ctnAddFormEmail {
+  display: flex;
+  align-items: center;
+}
+
+#containerVoucher .formAdd .ctnAddFormEmail .addEmail {
+  cursor: pointer;
+  user-select: none;
+  margin-left: 8px;
+  padding: 4px;
+  border-radius: 6px;
+  background-color: rgb(235, 186, 80);
+  color: white;
+  font-size: large;
+}
+
+#containerVoucher .formAdd .addEmail:hover {
+  opacity: 0.8;
+}
+
+#containerVoucher .formAdd .btnSave {
+	margin: 5px 0;
+	padding: 10px 8%;
+	background-color: deepskyblue;
+	border: none;
+	color: white;
+	user-select: none;
+	cursor: pointer;
+	border-radius: 10px;
+	white-space: nowrap;
+}
+
+#containerVoucher .formAdd .btnReset {
+  margin-left: 10px;
+	padding: 10px 6%;
+	background-color: lightcoral;
+	border: none;
+	color: white;
+	user-select: none;
+	cursor: pointer;
+	border-radius: 10px;
+	white-space: nowrap;
+}
+
+#containerVoucher .formAdd .btnSave:hover,
+.btnReset:hover {
+	opacity: 0.8;
+}
+
+#containerVoucher .formAdd .message {
+	font-size: large;
+	color: red;
+}
+

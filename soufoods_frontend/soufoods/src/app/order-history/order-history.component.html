@@ -1,0 +1,280 @@
+<app-header></app-header>
+<title>Lịch sử đặt hàng - Soufoods</title>
+<div class="title">LỊCH SỬ ĐẶT HÀNG</div>
+<div class="container">
+  <div class="containerOrder row mx-0">
+    <app-menu-account class="col-xl-3 col-lg-4 col-md-4 mx-0"></app-menu-account>
+
+    <div class="col-xl-9 col-lg-8 col-md-8 col-sm-12 mx-0 px-0">
+      <div class="ctnVouchers">
+        <div class="menu-order">
+          <ul class="nav nav-pills" id="pills-tab" role="tablist">
+            <li class="nav-item position-relative" role="presentation">
+              <button class="nav-link item-status active" status="Chờ xử lý" id="pills-wait-tab" data-bs-toggle="pill" data-bs-target="#pills-wait" type="button" role="tab" aria-controls="pills-wait" aria-selected="true">Chờ xử lý</button>
+              <span class="count-order position-absolute start-100 translate-middle badge rounded-pille" *ngIf="count.wait != 0">{{count.wait}}</span>
+            </li>
+
+            <li class="nav-item position-relative" role="presentation">
+              <button class="nav-link item-status" status="Đã xử lý" id="pills-processed-tab" data-bs-toggle="pill" data-bs-target="#pills-processed" type="button" role="tab" aria-controls="pills-processed" aria-selected="false">Đã xử lý</button>
+              <span class="count-order position-absolute start-100 translate-middle badge rounded-pille" *ngIf="count.processed != 0">{{count.processed}}</span>
+            </li>
+
+            <li class="nav-item position-relative" role="presentation">
+              <button class="nav-link item-status" status="Đang giao" id="pills-delivering-tab" data-bs-toggle="pill" data-bs-target="#pills-delivering" type="button" role="tab" aria-controls="pills-delivering" aria-selected="false">Đang giao</button>
+              <span class="count-order position-absolute start-100 translate-middle badge rounded-pille" *ngIf="count.delivering != 0">{{count.delivering}}</span>
+            </li>
+
+            <li class="nav-item position-relative" role="presentation">
+              <button class="nav-link item-status" status="Đã giao" id="pills-delivered-tab" data-bs-toggle="pill" data-bs-target="#pills-delivered" type="button" role="tab" aria-controls="pills-delivered" aria-selected="false">Đã giao</button>
+            </li>
+
+            <li class="nav-item" role="presentation">
+              <button class="nav-link item-status" status="Đã hủy" id="pills-cancelled-tab" data-bs-toggle="pill" data-bs-target="#pills-cancelled" type="button" role="tab" aria-controls="pills-cancelled" aria-selected="false">Đã hủy</button>
+            </li>
+
+            <li class="nav-item" role="presentation">
+              <button class="nav-link item-status" status="Trả hàng" id="pills-return-tab" data-bs-toggle="pill" data-bs-target="#pills-return" type="button" role="tab" aria-controls="pills-return" aria-selected="false">Trả hàng</button>
+            </li>
+          </ul>
+        </div>
+
+        <div class="tab-content mt-4" id="pills-tabContent">
+          <div class="loading-data"><span class="loader3"></span></div>
+          <!-- Chờ xử lý -->
+          <ul class="tab-pane fade p-0 show active" id="pills-wait" role="tabpanel" aria-labelledby="pills-wait-tab" tabindex="0">
+            <div class="table-orders table-responsive">
+              <table class="table table-bordered text-center" *ngIf="orders.length != 0">
+                <th>Mã đơn</th>
+                <th>Họ và tên</th>
+                <th>Ngày đặt hàng</th>
+                <th>Loại thanh toán</th>
+                <th></th>
+
+                <tr *ngFor="let order of orders; let i = index" class="tr-orderupdateForm">
+                  <td>{{order.id}}</td>
+                  <td>{{order.lastName +' '+ order.firstName}}</td>
+                  <td>{{order.createDate | date: 'dd-MM-yyyy mm:hh'}}</td>
+                  <td>{{order.payment}}</td>
+                  <td>
+                    <div class="action">
+                      <button class="btn see-detail" [id]="order.id"><i class="fa-solid fa-eye" flag="true"></i> Xem</button>
+                      <button class="cancel" id="{{order.id}}"><i class="fa-solid fa-xmark"></i> Hủy</button>
+                    </div>
+                  </td>
+                </tr>
+              </table>
+
+              <div class="message-order" *ngIf="orders.length == 0">
+                Bạn chưa có đơn hàng nào !
+                <br><br><a href="/collections/category?id=0&name=T%E1%BA%A5t%20c%E1%BA%A3%20s%E1%BA%A3n%20ph%E1%BA%A9m"><span class="see-all">MUA SẮM NGAY</span></a>
+              </div>
+            </div>
+          </ul>
+
+          <!-- Đã xử lý -->
+          <ul class="tab-pane fade p-0" id="pills-processed" role="tabpanel" aria-labelledby="pills-processed-tab" tabindex="0">
+            <div class="table-orders table-responsive">
+              <table class="table table-bordered text-center" *ngIf="orders.length != 0">
+                <th>Mã đơn</th>
+                <th>Họ và tên</th>
+                <th>Ngày đặt hàng</th>
+                <th>Loại thanh toán</th>
+                <th></th>
+
+                <tr *ngFor="let order of orders; let i = index" class="tr-orderupdateForm">
+                  <td>{{order.id}}</td>
+                  <td>{{order.lastName +' '+ order.firstName}}</td>
+                  <td>{{order.createDate | date: 'dd-MM-yyyy mm:hh'}}</td>
+                  <td>{{order.payment}}</td>
+                  <td>
+                    <div class="action">
+                      <button class="btn see-detail" [id]="order.id"><i class="fa-solid fa-eye" flag="true"></i> Xem</button>
+                      <button class="cancel" id="{{order.id}}"><i class="fa-solid fa-xmark"></i> Hủy</button>
+                    </div>
+                  </td>
+                </tr>
+              </table>
+
+              <div class="message-order" *ngIf="orders.length == 0">
+                Bạn chưa có đơn hàng nào !
+              </div>
+            </div>
+          </ul>
+
+          <!-- Đã xử lý -->
+          <ul class="tab-pane fade p-0" id="pills-processed" role="tabpanel" aria-labelledby="pills-processed-tab" tabindex="0">
+            <div class="table-orders table-responsive">
+              <table class="table table-bordered text-center" *ngIf="orders.length != 0">
+                <th>Mã đơn</th>
+                <th>Họ và tên</th>
+                <th>Ngày đặt hàng</th>
+                <th>Loại thanh toán</th>
+                <th></th>
+
+                <tr *ngFor="let order of orders; let i = index" class="tr-orderupdateForm">
+                  <td>{{order.id}}</td>
+                  <td>{{order.lastName +' '+ order.firstName}}</td>
+                  <td>{{order.createDate | date: 'dd-MM-yyyy mm:hh'}}</td>
+                  <td>{{order.payment}}</td>
+                  <td>
+                    <div class="action">
+                      <button class="btn see-detail" [id]="order.id"><i class="fa-solid fa-eye" flag="true"></i> Xem</button>
+                    </div>
+                  </td>
+                </tr>
+              </table>
+
+              <div class="message-order" *ngIf="orders.length == 0">
+                Bạn chưa có đơn hàng nào !
+              </div>
+            </div>
+          </ul>
+
+          <!-- Đang giao -->
+          <ul class="tab-pane fade p-0" id="pills-delivering" role="tabpanel" aria-labelledby="pills-delivering-tab" tabindex="0">
+            <div class="table-orders table-responsive">
+              <table class="table table-bordered text-center" *ngIf="orders.length != 0">
+                <th>Mã đơn</th>
+                <th>Họ và tên</th>
+                <th>Ngày đặt hàng</th>
+                <th>Loại thanh toán</th>
+                <th></th>
+
+                <tr *ngFor="let order of orders; let i = index" class="tr-orderupdateForm">
+                  <td>{{order.id}}</td>
+                  <td>{{order.lastName +' '+ order.firstName}}</td>
+                  <td>{{order.createDate | date: 'dd-MM-yyyy mm:hh'}}</td>
+                  <td>{{order.payment}}</td>
+                  <td>
+                    <div class="action">
+                      <button class="btn see-detail" [id]="order.id"><i class="fa-solid fa-eye" flag="true"></i> Xem</button>
+                    </div>
+                  </td>
+                </tr>
+              </table>
+
+              <div class="message-order" *ngIf="orders.length == 0">
+                Bạn chưa có đơn hàng nào !
+              </div>
+            </div>
+          </ul>
+
+          <!-- Đã giao -->
+          <ul class="tab-pane fade p-0" id="pills-delivered" role="tabpanel" aria-labelledby="pills-delivered-tab" tabindex="0">
+            <div class="table-orders table-responsive">
+              <table class="table table-bordered text-center" *ngIf="orders.length != 0">
+                <th>Mã đơn</th>
+                <th>Họ và tên</th>
+                <th>Ngày đặt hàng</th>
+                <th>Loại thanh toán</th>
+                <th></th>
+
+                <tr *ngFor="let order of orders; let i = index" class="tr-orderupdateForm">
+                  <td>{{order.id}}</td>
+                  <td>{{order.lastName +' '+ order.firstName}}</td>
+                  <td>{{order.createDate | date: 'dd-MM-yyyy mm:hh'}}</td>
+                  <td>{{order.payment}}</td>
+                  <td>
+                    <div class="action">
+                      <button class="btn see-detail" [id]="order.id"><i class="fa-solid fa-eye" flag="true"></i> Xem</button>
+                    </div>
+                  </td>
+                </tr>
+              </table>
+
+              <div class="message-order" *ngIf="orders.length == 0">
+                Bạn chưa có đơn hàng nào !
+              </div>
+            </div>
+          </ul>
+
+          <!-- Đã hủy -->
+          <ul class="tab-pane fade p-0" id="pills-cancelled" role="tabpanel" aria-labelledby="pills-cancelled-tab" tabindex="0">
+            <div class="table-orders table-responsive">
+              <table class="table table-bordered text-center" *ngIf="orders.length != 0">
+                <th>Mã đơn</th>
+                <th>Họ và tên</th>
+                <th>Ngày đặt hàng</th>
+                <th>Loại thanh toán</th>
+                <th></th>
+
+                <tr *ngFor="let order of orders; let i = index" class="tr-orderupdateForm">
+                  <td>{{order.id}}</td>
+                  <td>{{order.lastName +' '+ order.firstName}}</td>
+                  <td>{{order.createDate | date: 'dd-MM-yyyy mm:hh'}}</td>
+                  <td>{{order.payment}}</td>
+                  <td>
+                    <div class="action">
+                      <button class="btn see-detail" [id]="order.id"><i class="fa-solid fa-eye" flag="true"></i> Xem</button>
+                    </div>
+                  </td>
+                </tr>
+              </table>
+
+              <div class="message-order" *ngIf="orders.length == 0">
+                Bạn chưa có đơn hàng nào !
+              </div>
+            </div>
+          </ul>
+
+          <!-- Trả hàng -->
+          <ul class="tab-pane fade p-0" id="pills-return" role="tabpanel" aria-labelledby="pills-return-tab" tabindex="0">
+            <div class="table-orders table-responsive">
+              <table class="table table-bordered text-center" *ngIf="orders.length != 0">
+                <th>Mã đơn</th>
+                <th>Họ và tên</th>
+                <th>Ngày đặt hàng</th>
+                <th>Loại thanh toán</th>
+                <th></th>
+
+                <tr *ngFor="let order of orders; let i = index" class="tr-orderupdateForm">
+                  <td>{{order.id}}</td>
+                  <td>{{order.lastName +' '+ order.firstName}}</td>
+                  <td>{{order.createDate | date: 'dd-MM-yyyy mm:hh'}}</td>
+                  <td>{{order.payment}}</td>
+                  <td>
+                    <div class="action">
+                      <button class="btn see-detail" [id]="order.id"><i class="fa-solid fa-eye" flag="true"></i> Xem</button>
+                    </div>
+                  </td>
+                </tr>
+              </table>
+
+              <div class="message-order" *ngIf="orders.length == 0">
+                Bạn chưa có đơn hàng nào !
+              </div>
+            </div>
+          </ul>
+
+          <ul id="paging" *ngIf="total > 0 && totalPage.length > 1">
+            <span class="page" *ngIf="pageNumber > 1" (click)="setPageNumber(pageNumber - 1)"><li>Trước đó</li></span>
+            <ng-container *ngFor="let i of totalPage">
+              <ng-container *ngIf="i <= 5 && pageNumber <= 2">
+                <ng-container *ngIf="i == pageNumber">
+                  <span class="page" (click)="setPageNumber(i)"><li style="background-color: rgb(253, 142, 105);">{{i}}</li></span>
+                </ng-container>
+                <ng-container *ngIf="i != pageNumber">
+                  <span class="page" (click)="setPageNumber(i)"><li>{{i}}</li></span>
+                </ng-container>
+              </ng-container>
+
+              <ng-container *ngIf="pageNumber > 2">
+                <ng-container *ngIf="i >= pageNumber-2 && i <= pageNumber+2">
+                  <ng-container *ngIf="i==pageNumber">
+                    <span class="page" (click)="setPageNumber(i)"><li style="background-color: rgb(253, 142, 105);">{{i}}</li></span>
+                  </ng-container>
+                  <ng-container *ngIf="i!=pageNumber">
+                    <span class="page" (click)="setPageNumber(i)"><li>{{i}}</li></span>
+                  </ng-container>
+                </ng-container>
+              </ng-container>
+
+            </ng-container>
+            <span class="page" *ngIf="pageNumber < totalPage.length" (click)="setPageNumber(pageNumber + 1)"><li>Kế tiếp</li></span>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<app-footer></app-footer>
