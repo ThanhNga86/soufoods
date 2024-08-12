@@ -1,0 +1,42 @@
+<app-menu></app-menu>
+<div id="containerAddress" class="on-off-menu">
+  <div class="pick-address">
+    <i class="fa-solid fa-location-dot"></i> Địa chỉ:
+    <span *ngIf="account.address != null"> {{account.address}}</span>
+    <span *ngIf="account.address == null" style="font-weight: 500; font-style: italic;"> Vui lòng cập nhật</span>
+  </div>
+
+  <div class="form-group">
+    <label>Địa chỉ chi tiết</label>
+    <input type="text" name="address" class="form-control inpForm inpAddress" placeholder="Địa chỉ chi tiết (Số nhà/Tên đường/Tòa nhà)">
+
+    <div class="form-group">
+      <label class="label-address">Tỉnh / Thành</label>
+      <select class="form-select inpForm inpProvinces">
+        <option value="">Chọn Tỉnh / Thành</option>
+        <ng-container *ngFor="let provinces of address.provinces">
+          <option [value]="provinces.name" [attr.code]="provinces.code">{{provinces.name}}</option>
+        </ng-container>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label class="label-address">Quận / Huyện</label>
+      <select class="form-select inpForm inpDistricts">
+        <option value="">Chọn Quận / Huyện</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label class="label-address">Phường / Xã</label>
+      <select class="form-select inpForm inpWards">
+        <option value="">Chọn Phường / Xã</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="form-group mt-2">
+    <button type="button" class="btn btnSave">Cập nhật</button>
+    <button class="btn btnReset">Nhập lại</button>
+  </div>
+</div>

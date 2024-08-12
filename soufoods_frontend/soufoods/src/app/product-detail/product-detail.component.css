@@ -1,0 +1,847 @@
+@media (max-width: 992px) {
+  .ctnImage .image {
+    height: 350px;
+  }
+
+  .ctnLabeling .favorite,
+  .addCart,
+  .seeProduct {
+    display: block;
+  }
+
+  .ctnLabeling .favorite {
+    font-size: 18px;
+  }
+
+  .ctnLabeling .addCart,
+  .seeProduct {
+    font-size: 10px;
+  }
+}
+
+@media (min-width: 992px) {
+  .ctnImage .image {
+    height: 550px;
+  }
+
+  .ctnLabeling .favorite,
+  .addCart,
+  .seeProduct {
+    display: none;
+  }
+
+  .productD:hover .favorite,
+  .productD:hover .addCart,
+  .productD:hover .seeProduct {
+    display: block;
+  }
+
+  .productD .favorite:hover {
+    animation: favorite 0.5s ease infinite;
+  }
+
+  @keyframes favorite {
+    0% {
+      transform: scale(1.1);
+    }
+    50% {
+      transform: scale(0.9);
+    }
+    100% {
+      transform: scale(1.1);
+    }
+  }
+
+  .productD:hover .bottom-labeling {
+    animation: addCartOrSeeProduct 0.3s ease-in-out;
+  }
+
+  @keyframes addCartOrSeeProduct {
+    0% {
+      opacity: 0.1;
+      margin-top: 10px;
+    }
+    25% {
+      opacity: 0.3;
+      margin-top: 0;
+    }
+    50% {
+      opacity: 0.6;
+      margin-top: -25px;
+    }
+    75% {
+      opacity: 0.9;
+      margin-top: -53px;
+    }
+    100% {
+      margin-top: -50px;
+    }
+  }
+
+  .ctnLabeling .favorite {
+    font-size: larger;
+  }
+
+  .ctnLabeling .addCart,
+  .seeProduct {
+    font-size: medium;
+  }
+}
+
+@media (max-width: 768px) {
+  #containerInfo .menu-info .nav-item {
+    width: 100%;
+    text-align: center;
+  }
+
+  .products {
+    display: grid;
+    justify-content: center;
+    grid-template-columns: auto auto;
+  }
+
+  .ctnLabeling .discount,
+  .type,
+  .outStock {
+    font-size: 8px;
+    width: 50px;
+  }
+}
+
+@media (min-width: 768px) {
+  .show-images::-webkit-scrollbar {
+    width: 10px;
+  }
+
+  .show-images::-webkit-scrollbar-thumb {
+    background-color: rgb(255, 176, 80);
+    border-radius: 4px;
+  }
+
+  .show-images::-webkit-scrollbar-thumb:hover {
+    background-color: rgb(255, 176, 80);
+  }
+
+  .show-images::-webkit-scrollbar-track {
+    background-color: rgba(255, 176, 80, 0.5);
+  }
+
+  #containerProduct .ctnInfo .ctnAddCart .btnAddCartP:hover {
+    background-color: rgb(7, 201, 7);
+  }
+
+  #containerProduct .ctnInfo .ctnFavorite .btnFavorite:hover > .favorite {
+    animation: favorite 0.5s ease infinite;
+  }
+
+  @keyframes favorite {
+    0% {
+      transform: scale(1.1);
+    }
+    50% {
+      transform: scale(0.9);
+    }
+    100% {
+      transform: scale(1.1);
+    }
+  }
+
+  .ctnLabeling .discount,
+  .type,
+  .outStock {
+    font-size: 12px;
+    width: 68px;
+  }
+}
+
+@media (max-width: 576px) {
+  .ctnReview .formReview {
+    width: 90%;
+  }
+}
+
+.title {
+  text-align: center;
+  width: 100%;
+  padding: 10px 0;
+  font-size: 18px;
+  font-weight: 480;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 211, 153, 1) 30%,
+    rgba(192, 255, 177, 1) 100%
+  );
+  color: orange;
+}
+
+.instruction {
+  background-color: rgb(246, 250, 241);
+  display: flex;
+  justify-content: space-between;
+}
+
+.instruction .ins {
+  font-size: 14px;
+  padding: 10px 0;
+}
+
+.instruction .ins i {
+  font-size: 12px;
+  margin: 0 5px;
+}
+
+.instruction .ins a:hover {
+  color: orange;
+}
+
+.instruction a {
+  text-decoration: none;
+  color: black;
+}
+
+.loading-data {
+  text-align: center;
+}
+
+/* Chi tiết sản phẩm */
+#containerProduct {
+  margin-top: 20px;
+}
+
+#containerProduct .ctnImage .image {
+  background-color: white;
+  background-image: url(../../assets/images/loading-image.gif);
+  background-position: 70% 100%;
+  background-size: cover;
+  background-repeat: no-repeat;
+  object-position: center center;
+  overflow: hidden;
+  position: relative;
+}
+
+#containerProduct .ctnImage .image img {
+  max-width: 100%;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  object-fit: contain;
+  object-position: center center;
+}
+
+#containerProduct .viewDetailImage {
+  margin-top: 3%;
+  padding: 0;
+  position: relative;
+  width: 68px;
+  height: 68px;
+  user-select: none;
+  cursor: pointer;
+  display: inline-block;
+  text-align: center;
+}
+
+#containerProduct .viewDetailImage:hover {
+  opacity: 0.8;
+}
+
+#containerProduct .viewDetailImage .viewImage {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  border: none;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.3);
+  color: white;
+  font-weight: 500;
+  font-size: medium;
+}
+
+/*Hiển thị và ẩn phần nhiều hình ảnh*/
+.show-detailImage {
+  display: none;
+  position: fixed;
+  user-select: none;
+  cursor: pointer;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.8);
+  z-index: 99999999;
+}
+
+.show-images {
+  display: none;
+  position: fixed;
+  top: 50px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 99999999;
+  width: 100%;
+  overflow: auto;
+}
+
+.hidden-detailImage {
+  color: white;
+  font-size: 28px;
+  cursor: pointer;
+  float: right;
+  margin: 15px 20px;
+}
+
+.show-images .row {
+  display: flex;
+  justify-content: center;
+}
+
+.show-images .row > div {
+  margin: 10px 25%;
+  cursor: default;
+}
+
+.fa-x:hover {
+  opacity: 0.8;
+}
+
+#containerProduct .ctnInfo .name {
+  font-size: 22px;
+  font-weight: 500;
+  margin-bottom: 5px;
+}
+
+#containerProduct .ctnInfo .review-product {
+  margin-bottom: 5px;
+  cursor: pointer;
+}
+
+#containerProduct .ctnInfo .price-del {
+  margin-right: 10px;
+  font-size: 20px;
+  color: grey;
+}
+
+#containerProduct .ctnInfo .price {
+  font-size: 20px;
+  color: orange;
+}
+
+#containerProduct .ctnInfo .promotion {
+  margin-top: 5px;
+}
+
+#containerProduct .ctnInfo .promotion .discount {
+  margin-right: 10px;
+  background-color: rgb(255, 87, 87);
+  color: white;
+  padding: 2px 6px;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+#containerProduct .ctnInfo .promotion .save-money {
+  background-color: rgb(255, 87, 87);
+  color: white;
+  padding: 2px 6px;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+#containerProduct .ctnInfo .active {
+  margin: 10px 0;
+}
+
+#containerProduct .ctnInfo .see-describes,
+.see-review {
+  font-weight: 500;
+  cursor: pointer;
+  user-select: none;
+  margin-left: 5px;
+}
+
+#containerProduct .ctnInfo .sizes {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+
+#containerProduct .ctnInfo .name-size {
+  margin-top: 10px;
+  font-weight: 500;
+}
+
+#containerProduct .ctnInfo .sizes .size-del {
+  margin: 5px 5px 5px 0;
+  padding: 3px 6px;
+  border-radius: 10px;
+  background-color: white;
+  color: grey;
+  border: solid 1px lightgrey;
+  user-select: none;
+  font-size: 14px;
+}
+
+#containerProduct .ctnInfo .sizes .size {
+  margin: 5px 5px 5px 0;
+  padding: 3px 6px;
+  border-radius: 10px;
+  background-color: rgb(255, 176, 80);
+  color: white;
+  cursor: pointer;
+  user-select: none;
+  font-size: 14px;
+}
+
+#containerProduct .ctnInfo .message-quantity {
+  color: red;
+}
+
+#containerProduct .ctnInfo .action-productDetail {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+
+#containerProduct .ctnInfo .action-productDetail .ctnQuantity {
+  margin-top: 10px;
+  padding: 5px 15px;
+  border-radius: 20px;
+  border: solid 1px black;
+  font-size: large;
+  display: flex;
+  align-items: center;
+  margin-right: 10px;
+}
+
+#containerProduct .ctnInfo .action-productDetail .quantity {
+  margin: 0 20px;
+}
+
+#containerProduct .ctnInfo .action-productDetail .btnMinus,
+.action-productDetail .btnPlus,
+.btnFavorite {
+  border: none;
+  background-color: transparent;
+}
+
+#containerProduct .ctnInfo .ctnAddCart .btnAddCartP,
+.btnOutStock {
+  margin-right: 10px;
+  margin-top: 10px;
+  border-radius: 20px;
+  border: none;
+  color: white;
+  background-color: rgb(255, 176, 80);
+  padding: 8px 20px;
+  white-space: nowrap;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+/* Thông tin sản phẩm */
+#containerProduct .ctnInfo .ctnFavorite .btnFavorite {
+  margin-top: 10px;
+  border-radius: 50%;
+  border: solid 1px rgb(255, 176, 80);
+  padding: 6px 9px;
+}
+
+#containerProduct .ctnInfo .ctnFavorite .favorite {
+  font-size: 18px;
+  color: rgb(255, 176, 80);
+}
+
+#containerInfo .menu-info {
+  display: flex;
+  justify-content: center;
+}
+
+#containerInfo .menu-info .nav-link.active {
+  background-color: rgb(255, 190, 111);
+  color: white;
+}
+
+#containerInfo .menu-info .nav-link {
+  font-weight: 500;
+  color: grey;
+  background-color: rgba(255, 176, 80, 0.5);
+  border-radius: 0;
+  font-size: 14px;
+}
+
+#containerInfo .menu-info .nav-link:hover {
+  opacity: 0.8;
+}
+
+#containerInfo .title-feedback,
+.title-review {
+  text-align: center;
+  font-weight: 500;
+}
+
+#containerInfo .ctnFeedback {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+#containerInfo .ctnFeedback .review {
+  margin: 10px 20px;
+}
+
+#containerInfo .ctnFeedback .progress-rate {
+  position: relative;
+  width: 150px;
+  height: 15px;
+}
+
+#containerInfo .ctnFeedback .ctnRate {
+  display: flex;
+  align-items: center;
+}
+
+#containerInfo .ctnFeedback .ctnRate .progress-rate {
+  margin: 0 10px;
+}
+
+#containerInfo .ctnFeedback .ctnRate .progress-rate .rated {
+  position: absolute;
+  z-index: 1;
+  border-radius: 20px;
+  height: 100%;
+  background-color: rgb(255, 190, 111);
+}
+
+#containerInfo .ctnFeedback .ctnRate .progress-rate .unRated {
+  position: absolute;
+  border-radius: 20px;
+  width: 100%;
+  height: 100%;
+  background-color: rgb(234, 231, 231);
+}
+
+#containerInfo .ctnFeedback .ctnRate .totalRate {
+  font-size: 14px;
+}
+
+#containerInfo .ctnReview {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+#containerInfo .ctnReview .review-star {
+  color: rgb(248, 196, 74);
+  margin-right: 3px;
+  font-size: 20px;
+  cursor: pointer;
+  text-align: center;
+}
+
+#containerInfo .ctnReview label {
+  font-size: medium;
+  margin-bottom: 2px;
+  margin-top: 8px;
+}
+
+#containerInfo .ctnReview .form-control:focus {
+  box-shadow: 0 0 0 2px rgb(255, 222, 170);
+  border-color: rgb(255, 222, 170);
+}
+
+#containerInfo .uploadImages {
+  background-color: transparent;
+  border: none;
+}
+
+#containerInfo .uploadImages > i {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: grey;
+  width: 80px;
+  height: 80px;
+  border-radius: 10px;
+  border: solid 1px lightgrey;
+  font-size: 40px;
+  cursor: pointer;
+}
+
+#containerInfo .ctnImages {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+#containerInfo .btnSendReview {
+  margin-top: 20px;
+  padding: 6px 40px;
+  background-color: rgb(255, 176, 80);
+  border-radius: 20px;
+  color: white;
+  font-weight: 500;
+  border: none;
+}
+
+#containerInfo .btnSendReview:hover {
+  opacity: 0.8;
+}
+
+#containerInfo .message {
+  font-size: medium;
+  color: red;
+}
+
+#containerInfo .viewDetailImage {
+  margin-top: 5px;
+  padding: 0;
+  position: relative;
+  width: 68px;
+  height: 68px;
+  user-select: none;
+  cursor: pointer;
+  display: inline-block;
+  text-align: center;
+}
+
+#containerInfo .viewDetailImage:hover {
+  opacity: 0.8;
+}
+
+#containerInfo .viewDetailImage .viewImage {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  border: none;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.3);
+  color: white;
+  font-weight: 500;
+  font-size: medium;
+}
+
+#containerInfo .image {
+  background-color: white;
+  height: 68px;
+  width: 68px;
+  background-image: url(../../assets/images/loading-image.gif);
+  background-position: 70% 100%;
+  background-size: cover;
+  background-repeat: no-repeat;
+  object-position: center center;
+  overflow: hidden;
+  position: relative;
+}
+
+#containerInfo .image img {
+  max-width: 100%;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  object-fit: contain;
+  object-position: center center;
+}
+
+/* paging */
+#paging {
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+}
+
+#paging .btnPage {
+  color: deepskyblue;
+  background-color: transparent;
+  border: none;
+}
+
+#paging .btnPage > i {
+  font-size: 14px;
+}
+
+#paging .btnPage:hover {
+  opacity: 0.8;
+}
+
+/* Sản phẩm tương tự */
+#containerSimilar {
+  margin-top: 30px;
+  padding: 20px;
+}
+
+#containerSimilar .title-similar {
+  text-align: center;
+  font-weight: 500;
+  font-size: 20px;
+  color: rgb(255, 190, 111);
+  margin-bottom: 20px;
+}
+
+#containerSimilar {
+  padding: 20px 12px;
+}
+
+#containerSimilar .productD {
+  padding: 0 5px;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  overflow: hidden;
+  position: relative;
+}
+
+#containerSimilar .productD .image {
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  background-color: white;
+  height: 180px;
+  background-image: url(../../assets/images/loading-image.gif);
+  background-position: 70% 100%;
+  background-size: cover;
+  background-repeat: no-repeat;
+  object-position: center center;
+  overflow: hidden;
+  position: relative;
+}
+
+#containerSimilar .productD .image img {
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  max-width: 100%;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  object-fit: contain;
+  object-position: center center;
+}
+
+.productD > a {
+  text-decoration: none;
+}
+
+.productD .loader2 {
+  display: none;
+  color: white;
+  cursor: pointer;
+  background-color: orange;
+  padding: 10px;
+  opacity: 0.9;
+}
+
+.productD .left-labeling {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.productD .right-labeling {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.productD .bottom-labeling {
+  position: absolute;
+  left: 40%;
+  margin-top: -50px;
+}
+
+.productD .ctnLabeling {
+  position: absolute;
+  z-index: 100;
+}
+
+.productD .ctnLabeling .btnFavorite,
+.ctnLabeling .btnAddCart,
+.ctnLabeling .btnSeeProduct {
+  border: none;
+  background-color: transparent;
+}
+
+.productD .ctnLabeling .favorite {
+  color: orange;
+  cursor: pointer;
+  padding: 5px;
+}
+
+.productD .ctnLabeling .addCart {
+  color: white;
+  cursor: pointer;
+  background-color: orange;
+  padding: 10px;
+  border-radius: 60%;
+  opacity: 0.9;
+}
+
+.productD .ctnLabeling .addCart:hover {
+  background-color: rgb(7, 201, 7);
+}
+
+.productD .ctnLabeling .seeProduct {
+  color: white;
+  cursor: pointer;
+  background-color: orange;
+  padding: 10px 15px;
+  border-radius: 65%;
+  opacity: 0.9;
+}
+
+.productD .ctnLabeling .seeProduct:hover {
+  background-color: rgb(7, 201, 7);
+}
+
+.productD .ctnLabeling .discount {
+  margin-bottom: 3px;
+  padding: 2px 6px;
+  background-color: rgb(255, 87, 87);
+  color: white;
+  border-bottom-right-radius: 6px;
+  border-top-left-radius: 6px;
+  user-select: none;
+  text-align: center;
+}
+
+.productD .ctnLabeling .type {
+  margin-bottom: 3px;
+  padding: 2px 6px;
+  background-color: dodgerblue;
+  color: white;
+  border-bottom-right-radius: 6px;
+  border-top-left-radius: 6px;
+  user-select: none;
+  text-align: center;
+}
+
+.productD .ctnLabeling .outStock {
+  margin-bottom: 3px;
+  padding: 2px 6px;
+  background-color: deepskyblue;
+  color: white;
+  border-bottom-right-radius: 6px;
+  border-top-left-radius: 6px;
+  user-select: none;
+  text-align: center;
+}
+
+.productD .name {
+  padding: 5px 0;
+  text-align: center;
+}
+
+.productD .name .price {
+  color: orange;
+}
+
+.productD .name .price-del,
+.name .showSize {
+  color: grey;
+}

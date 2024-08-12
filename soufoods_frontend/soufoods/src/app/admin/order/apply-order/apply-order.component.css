@@ -1,0 +1,111 @@
+#containerOrder {
+  margin: 5px;
+}
+
+.message {
+  color: red;
+  font-size: large;
+}
+
+#containerOrder .wait {
+  margin: 2px;
+  padding: 2px 4px;
+  border-radius: 6px;
+  background-color: rgb(247, 207, 34);
+  white-space: nowrap;
+  color: white;
+  user-select: none;
+}
+
+#containerOrder table,
+tr,
+td,
+th {
+  border: solid 1px lightgray;
+  border-collapse: collapse;
+}
+
+#containerOrder table td {
+  padding: 3px;
+}
+
+#containerOrder table th {
+  padding: 8px;
+  font-size: 16px;
+}
+
+#containerOrder .action {
+  display: grid;
+  align-items: center;
+  grid-template-columns: auto auto;
+  border: none;
+  font-size: 14px;
+}
+
+#containerOrder .action .cancel {
+  margin: 2px;
+  padding: 2px 4px;
+  border-radius: 6px;
+  background-color: lightcoral;
+  white-space: nowrap;
+  color: white;
+  user-select: none;
+  cursor: pointer;
+}
+
+#containerOrder .action .apply {
+  margin: 2px;
+  text-decoration: none;
+  padding: 2px 4px;
+  border-radius: 6px;
+  background-color: deepskyblue;
+  white-space: nowrap;
+  font-size: 14px;
+  color: white;
+  user-select: none;
+  cursor: pointer;
+}
+
+#containerOrder .action .see-detail {
+  margin: 2px;
+  text-decoration: none;
+  padding: 2px 4px;
+  border-radius: 6px;
+  background-color: green;
+  white-space: nowrap;
+  color: white;
+  user-select: none;
+  cursor: pointer;
+}
+
+#containerOrder .action .cancel:hover,
+.apply:hover,
+.see-detail:hover {
+  opacity: 0.8;
+}
+
+/* paging */
+#paging {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+}
+
+#paging .page {
+  text-decoration: none;
+  color: white;
+  font-size: 14px;
+}
+
+#paging .page > li {
+  display: block;
+  padding: 5px 12px;
+  background-color: rgba(246, 166, 68, 0.8);
+  cursor: pointer;
+  user-select: none;
+}
+
+#paging .page:hover {
+  opacity: 0.8;
+}

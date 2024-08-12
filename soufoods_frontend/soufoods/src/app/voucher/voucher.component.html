@@ -1,0 +1,70 @@
+<app-header></app-header>
+<title>Mã giảm giá - Soufoods</title>
+<div class="title">MÃ GIẢM GIÁ</div>
+<div class="container">
+  <div class="containerVoucher row mx-0">
+    <app-menu-account class="col-xl-3 col-lg-4 col-md-4 mx-0"></app-menu-account>
+
+    <div class="col-xl-9 col-lg-8 col-md-8 col-sm-12 mx-0">
+      <div class="loading-data"><span class="loader3"></span></div>
+      <div class="ctnPayment" *ngIf="countC != 0"><a href="/payment" class="payemnt">Tới thanh toán <i class="fa-solid fa-arrow-right"></i></a></div>
+      <div class="ctnVouchers">
+        <div class="vouchers row mx-0">
+          <div class="col-xl-4 col-lg-6 col-md-6 col-sm-6" *ngFor="let voucher of vouchers">
+            <div class="voucher">
+              <div class="ctnDiscount">
+                <div class="discount" *ngIf="voucher.discountType">Giảm {{(voucher.discount.toLocaleString("vi-VN"))}} đ</div>
+                <div class="discount" *ngIf="!voucher.discountType">Giảm {{voucher.discount}}%</div>
+                <div *ngIf="voucher.freeShip" class="freeShip"><img src="assets/images/free-ship.png"></div>
+              </div>
+              <div *ngIf="!voucher.freeShip" class="freeShip"></div>
+              <div *ngIf="voucher.priceMin != 0" class="priceMin">Áp dụng cho đơn hàng từ {{(voucher.priceMin.toLocaleString("vi-VN"))}} đ</div>
+              <div *ngIf="voucher.priceMin == 0" class="priceMin">Áp dụng cho đơn hàng mọi giá</div>
+              <div class="expiration">Ngày hết hạn: {{voucher.expiration | date: 'dd/MM/yyyy'}}</div>
+              <div class="ctnDiscountCode">
+                <label>MÃ GIẢM GIÁ: </label>
+                <div class="discountCode">
+                  <div class="code">{{voucher.discountCode}}</div>
+                  <button class="btnCopyCode">Copy</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <ul id="paging" *ngIf="total > 0 && totalPage.length > 1">
+          <span class="page" *ngIf="pageNumber > 1" (click)="setPageNumber(pageNumber - 1)"><li>Trước đó</li></span>
+          <ng-container *ngFor="let i of totalPage">
+            <ng-container *ngIf="i <= 5 && pageNumber <= 2">
+              <ng-container *ngIf="i == pageNumber">
+                <span class="page" (click)="setPageNumber(i)"><li style="background-color: rgb(253, 142, 105);">{{i}}</li></span>
+              </ng-container>
+              <ng-container *ngIf="i != pageNumber">
+                <span class="page" (click)="setPageNumber(i)"><li>{{i}}</li></span>
+              </ng-container>
+            </ng-container>
+
+            <ng-container *ngIf="pageNumber > 2">
+              <ng-container *ngIf="i >= pageNumber-2 && i <= pageNumber+2">
+                <ng-container *ngIf="i==pageNumber">
+                  <span class="page" (click)="setPageNumber(i)"><li style="background-color: rgb(253, 142, 105);">{{i}}</li></span>
+                </ng-container>
+                <ng-container *ngIf="i!=pageNumber">
+                  <span class="page" (click)="setPageNumber(i)"><li>{{i}}</li></span>
+                </ng-container>
+              </ng-container>
+            </ng-container>
+
+          </ng-container>
+          <span class="page" *ngIf="pageNumber < totalPage.length" (click)="setPageNumber(pageNumber + 1)"><li>Kế tiếp</li></span>
+        </ul>
+      </div>
+
+      <div class="text-center" *ngIf="vouchers.length == 0">
+        <i class="fa-solid fa-ticket icon-voucher"></i>
+        <div style="color: grey;">Bạn chưa có mã giảm giá nào !</div>
+      </div>
+    </div>
+  </div>
+</div>
+<app-footer></app-footer>
